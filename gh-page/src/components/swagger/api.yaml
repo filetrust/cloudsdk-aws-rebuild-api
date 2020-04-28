@@ -1,0 +1,639 @@
+    openapi: 3.0.0
+    info:
+      title: File Rebuild API
+      description: HTTP endpoint that executes the Glasswall Rebuild Product.
+      version: 0.1.9
+    servers:
+      - url: https://8oiyjy8w63.execute-api.us-west-2.amazonaws.com/Prod
+        description: us-west-2
+    paths:
+      /api/Rebuild/base64:
+        post:
+          summary: Requests the input Base64 file is rebuilt.
+          description: Rebuilds the input Base64 file and returns its rebuilt counterpart in Base64
+          parameters:
+            - in: header
+              name: x-api-key
+              schema:
+                type: string
+              required: true
+          requestBody:
+            content:
+              "application/json":
+                schema:
+                  type: object
+                  required:
+                    - Base64
+                  properties:
+                    Base64:
+                      type: string
+                    FileName:
+                      type: string
+                    ContentManagementFlags:
+                      type: object
+                      properties: 
+                        PdfContentManagement:
+                          type: object
+                          properties:
+                            Metadata:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            InternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ExternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedFiles:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedImages:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Javascript:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Acroform:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ActionsAll:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                        ExcelContentManagement:
+                          type: object
+                          properties:
+                            Metadata:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            InternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ExternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedFiles:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedImages:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            DynamicDataExchange:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Macros:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ReviewComments:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                        PowerPointContentManagement:
+                          type: object
+                          properties:
+                            Metadata:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            InternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ExternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedFiles:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedImages:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Macros:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ReviewComments:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                        WordContentManagement:
+                          type: object
+                          properties:
+                            Metadata:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            InternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ExternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedFiles:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedImages:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            DynamicDataExchange:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Macros:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ReviewComments:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                encoding:
+                  file:
+                    style: form
+          responses:
+            '200':    # status code
+              description: Success
+              content: 
+                application/octet-stream:
+                  schema:
+                    type: string
+                    format: base64
+                    example: "0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAAUgAAAAAAAAAAEAAAAAAAAAEAAAD+////AAAAAFMAAAD//////////////////////////////..."
+            '400':
+              description: Bad Request - This is usually when the JSON input is malformed or missing parameters
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      Base64:
+                        type: array
+                        description: "Error relating to the input"
+                        items:
+                          type: string
+            '403':
+              description: Forbidden - This typically occurs when the x-api-key is not supplied, or it is incorrect.
+            '415':
+              description: Unsupported Media Type - This happens when the request was not sent in JSON.
+            '422':
+              description: Unprocessable Entity - This occurs when the Glasswall Engine was unable to rebuild the file due to an unsupported file type or if it is non conforming.
+      /api/Rebuild:
+        post:
+          summary: Requests the input file located at a Url is rebuilt.
+          description: Requests the input file located at a Url is rebuilt. The output rebuilt file is then uploaded to the specified Url.
+          parameters:
+            - in: header
+              name: x-api-key
+              schema:
+                type: string
+              required: true
+          requestBody:
+            content:
+              "application/json":
+                schema:
+                  type: object
+                  required:
+                    - InputGetUrl
+                    - OutputPutUrl
+                  properties:
+                    InputGetUrl:
+                      type: string
+                    OutputPutUrl:
+                      type: string
+                    ContentManagementFlags:
+                      type: object
+                      properties: 
+                        PdfContentManagement:
+                          type: object
+                          properties:
+                            Metadata:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            InternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ExternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedFiles:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedImages:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Javascript:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Acroform:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ActionsAll:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                        ExcelContentManagement:
+                          type: object
+                          properties:
+                            Metadata:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            InternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ExternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedFiles:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedImages:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            DynamicDataExchange:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Macros:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ReviewComments:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                        PowerPointContentManagement:
+                          type: object
+                          properties:
+                            Metadata:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            InternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ExternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedFiles:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedImages:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Macros:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ReviewComments:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                        WordContentManagement:
+                          type: object
+                          properties:
+                            Metadata:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            InternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ExternalHyperlinks:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedFiles:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            EmbeddedImages:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            DynamicDataExchange:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            Macros:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                            ReviewComments:
+                              type: integer
+                              enum: [1, 0, 2]
+                              description: >
+                                Content Management Flag:
+                                * `0` - Allow
+                                * `1` - Sanitise (Default)
+                                * `2` - Disallow
+                encoding:
+                  file:
+                    style: form
+          responses:
+            '200':    # status code
+              description: Success
+            '400':
+              description: Bad Request - This is usually when the JSON input is malformed or missing parameters
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      InputGetUrl:
+                        type: array
+                        description: "Error relating to the input"
+                        items:
+                          type: string
+                      OutputPutUrl:
+                        type: array
+                        description: "Error relating to the input"
+                        items:
+                          type: string
+            '403':
+              description: Forbidden - This typically occurs when the x-api-key is not supplied, or it is incorrect.
+            '415':
+              description: Unsupported Media Type - This happens when the request was not sent in JSON.
+            '422':
+              description: Unprocessable Entity - This occurs when the Glasswall Engine was unable to rebuild the file due to an unsupported file type or if it is non conforming.
