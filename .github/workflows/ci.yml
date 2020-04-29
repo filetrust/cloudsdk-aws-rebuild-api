@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: zip lambda.zip *
-      - uses: appleboy/lambda-action@0.0.4
+      - uses: appleboy/lambda-action@master
         name: AWS Lambda Deploy
         with:
           zip_file: lambda.zip
