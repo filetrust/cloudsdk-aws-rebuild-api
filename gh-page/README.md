@@ -3,7 +3,7 @@
 Simple single page application written in react, which allows users to have a file rebuilt with the Glasswall d-First Engine.
 
 ## Try it out
-You can view a live demo hosted on this repo [here](https://filetrust.github.io/product-file-type-detection/#/drop)
+You can view a live demo hosted on this repo [here](https://filetrust.github.io/cloudsdk-aws-rebuild-api/#/)
 
 ## Related Blog posts
 
@@ -25,4 +25,4 @@ Deployment is handled via Azure DevOps pipelines. Upon pushing to master a Build
 
 ## FAQ
 
-https://github.com/filetrust/product-file-type-detection/blob/master/faq.md
+https://github.com/filetrust/product-saas-rebuild/blob/master/faq.md
