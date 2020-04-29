@@ -1,6 +1,6 @@
-# Glasswall File Type Detection Drop
+# Glasswall File Type Rebuild
 
-Simple single page application written in react, which allows users to have a file type detected with the Glasswall d-First Engine.
+Simple single page application written in react, which allows users to have a file rebuilt with the Glasswall d-First Engine.
 
 ## Try it out
 You can view a live demo hosted on this repo [here](https://filetrust.github.io/product-file-type-detection/#/drop)
