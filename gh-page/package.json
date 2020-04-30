@@ -72,7 +72,7 @@
     "webpack-manifest-plugin": "2.1.1",
     "workbox-webpack-plugin": "4.3.1"
   },
-  "homepage": "http://filetrust.github.io/cloudskd-aws-rebuild-api",
+  "homepage": "http://filetrust.github.io/cloudsdk-aws-rebuild-api",
   "scripts": {
     "start": "npm-run-all -p start:watch-css start:node-js",
     "start:watch-css": "npm run start:watch-css:build-css && node-sass --include-path ./src --include-path ./node_modules src/sass -o src/ --watch --recursive",
