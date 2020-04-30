@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/cloudskd-aws-rebuild-api/static/css/main.7118b248.chunk.css",
-    "main.js": "/cloudskd-aws-rebuild-api/static/js/main.516a4f28.chunk.js",
-    "main.js.map": "/cloudskd-aws-rebuild-api/static/js/main.516a4f28.chunk.js.map",
-    "runtime-main.js": "/cloudskd-aws-rebuild-api/static/js/runtime-main.fe518f19.js",
-    "runtime-main.js.map": "/cloudskd-aws-rebuild-api/static/js/runtime-main.fe518f19.js.map",
-    "static/css/2.e4355e26.chunk.css": "/cloudskd-aws-rebuild-api/static/css/2.e4355e26.chunk.css",
-    "static/js/2.56d0f344.chunk.js": "/cloudskd-aws-rebuild-api/static/js/2.56d0f344.chunk.js",
-    "static/js/2.56d0f344.chunk.js.map": "/cloudskd-aws-rebuild-api/static/js/2.56d0f344.chunk.js.map",
-    "index.html": "/cloudskd-aws-rebuild-api/index.html",
-    "precache-manifest.55e27c757601408df2cd33f09c5cea8f.js": "/cloudskd-aws-rebuild-api/precache-manifest.55e27c757601408df2cd33f09c5cea8f.js",
-    "service-worker.js": "/cloudskd-aws-rebuild-api/service-worker.js",
-    "static/css/2.e4355e26.chunk.css.map": "/cloudskd-aws-rebuild-api/static/css/2.e4355e26.chunk.css.map",
-    "static/css/main.7118b248.chunk.css.map": "/cloudskd-aws-rebuild-api/static/css/main.7118b248.chunk.css.map",
-    "static/media/api.yaml": "/cloudskd-aws-rebuild-api/static/media/api.63ebf405.yaml",
-    "static/media/App.css": "/cloudskd-aws-rebuild-api/static/media/roboto-regular-webfont.d96d07c1.woff2",
-    "static/media/logo.svg": "/cloudskd-aws-rebuild-api/static/media/logo.6c8e5727.svg"
+    "main.css": "/cloudsdk-aws-rebuild-api/static/css/main.e3e4fc63.chunk.css",
+    "main.js": "/cloudsdk-aws-rebuild-api/static/js/main.516a4f28.chunk.js",
+    "main.js.map": "/cloudsdk-aws-rebuild-api/static/js/main.516a4f28.chunk.js.map",
+    "runtime-main.js": "/cloudsdk-aws-rebuild-api/static/js/runtime-main.0850f192.js",
+    "runtime-main.js.map": "/cloudsdk-aws-rebuild-api/static/js/runtime-main.0850f192.js.map",
+    "static/css/2.e4355e26.chunk.css": "/cloudsdk-aws-rebuild-api/static/css/2.e4355e26.chunk.css",
+    "static/js/2.56d0f344.chunk.js": "/cloudsdk-aws-rebuild-api/static/js/2.56d0f344.chunk.js",
+    "static/js/2.56d0f344.chunk.js.map": "/cloudsdk-aws-rebuild-api/static/js/2.56d0f344.chunk.js.map",
+    "index.html": "/cloudsdk-aws-rebuild-api/index.html",
+    "precache-manifest.6804b6527646b72df3ec26371376faa3.js": "/cloudsdk-aws-rebuild-api/precache-manifest.6804b6527646b72df3ec26371376faa3.js",
+    "service-worker.js": "/cloudsdk-aws-rebuild-api/service-worker.js",
+    "static/css/2.e4355e26.chunk.css.map": "/cloudsdk-aws-rebuild-api/static/css/2.e4355e26.chunk.css.map",
+    "static/css/main.e3e4fc63.chunk.css.map": "/cloudsdk-aws-rebuild-api/static/css/main.e3e4fc63.chunk.css.map",
+    "static/media/api.yaml": "/cloudsdk-aws-rebuild-api/static/media/api.63ebf405.yaml",
+    "static/media/App.css": "/cloudsdk-aws-rebuild-api/static/media/roboto-regular-webfont.d96d07c1.woff2",
+    "static/media/logo.svg": "/cloudsdk-aws-rebuild-api/static/media/logo.6c8e5727.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.fe518f19.js",
+    "static/js/runtime-main.0850f192.js",
     "static/css/2.e4355e26.chunk.css",
     "static/js/2.56d0f344.chunk.js",
-    "static/css/main.7118b248.chunk.css",
+    "static/css/main.e3e4fc63.chunk.css",
     "static/js/main.516a4f28.chunk.js"
   ]
 }
