@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
@@ -6,6 +7,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild
     /// <summary>
     /// The Main function can be used to run the ASP.NET Core application locally using the Kestrel webserver.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class LocalEntryPoint
     {
         public static void Main(string[] args)
