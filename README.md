@@ -1,4 +1,5 @@
 ![CI Build](https://github.com/filetrust/cloudsdk-aws-rebuild-api/workflows/CI%20Build/badge.svg)
+![Deploy](https://github.com/filetrust/cloudsdk-aws-rebuild-api/workflows/Deploy/badge.svg?branch=master)
 
 # ASP.NET Core Web API Serverless Application
 
