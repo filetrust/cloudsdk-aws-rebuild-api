@@ -53,7 +53,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [deploy-to-qa]
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout 🛎️
+        uses: actions/checkout@master
       - name: Merge to master branch 🔃
         uses: devmasx/merge-branch@v1.1.0
         with:
