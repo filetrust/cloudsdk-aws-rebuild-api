@@ -17,16 +17,19 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
+    - name: Install AWS Tools
+      run: dotnet tool install -g Amazon.Lambda.Tools
+    - name: package
+      run: dotnet lambda package ./package.zip -pl .\Source\Service\
   deploy-to-qa:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
       - uses: actions/checkout@master
-      - run: zip -r lambda.zip *
       - uses: appleboy/lambda-action@master
         name: AWS Lambda Deploy
         with:
-          zip_file: lambda.zip
+          zip_file: package.zip
           function_name: rebuild-stack-AspNetCoreFunction-S20I8J13N0XY
           aws_region: ${{ secrets.QA_REGION }}
           aws_access_key_id: ${{ secrets.QA_SECRET_ID }}
