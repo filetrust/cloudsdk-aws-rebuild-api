@@ -5,7 +5,7 @@ on:
     branches: [develop]
 
 jobs:
-  build:
+  deploy-to-qa:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -21,18 +21,14 @@ jobs:
       run: dotnet tool install -g Amazon.Lambda.Tools
     - name: package
       run: dotnet lambda package ./package.zip -pl ./Source/Service
-  deploy-to-qa:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: appleboy/lambda-action@master
-        name: AWS Lambda Deploy
-        with:
-          zip_file: ./package.zip
-          function_name: rebuild-stack-AspNetCoreFunction-S20I8J13N0XY
-          aws_region: ${{ secrets.QA_REGION }}
-          aws_access_key_id: ${{ secrets.QA_SECRET_ID }}
-          aws_secret_access_key: ${{ secrets.QA_SECRET_KEY }}
+    - uses: appleboy/lambda-action@master
+      name: AWS Lambda Deploy
+      with:
+        zip_file: ./package.zip
+        function_name: rebuild-stack-AspNetCoreFunction-S20I8J13N0XY
+        aws_region: ${{ secrets.QA_REGION }}
+        aws_access_key_id: ${{ secrets.QA_SECRET_ID }}
+        aws_secret_access_key: ${{ secrets.QA_SECRET_KEY }}
   ##end-to-end-test:
   ##  runs-on: ubuntu-latest
   ##  needs: [deploy-to-qa]
