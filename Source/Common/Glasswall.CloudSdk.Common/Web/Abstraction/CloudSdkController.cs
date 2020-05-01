@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Flurl.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -10,94 +11,99 @@ namespace Glasswall.CloudSdk.Common.Web.Abstraction
     [Route("api/[controller]")]
     public abstract class CloudSdkController<TController> : ControllerBase
     {
+        protected readonly Stopwatch TimeMetricTracker = new Stopwatch();
+        protected readonly IMetricService MetricService;
         protected readonly ILogger<TController> Logger;
 
-        protected CloudSdkController(ILogger<TController> logger)
+        protected CloudSdkController(
+            ILogger<TController> logger,
+            IMetricService metricService)
         {
+            MetricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         protected bool TryGetBase64File(string base64File, out byte[] file)
         {
-            if (base64File == null) throw new ArgumentNullException(nameof(base64File));
-
             file = null;
+
+            TimeMetricTracker.Restart();
 
             try
             {
                 file = Convert.FromBase64String(base64File);
-
-                return true;
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Could not parse base64 file {0}", base64File);
-
-                return false;
             }
+
+            var fileSize = file?.Length ?? 0;
+            MetricService.Record(Metric.Base64DecodeTime, TimeMetricTracker.Elapsed);
+            MetricService.Record(Metric.FileSize, fileSize);
+            return fileSize > 0;
         }
 
         protected bool TryGetFile(Uri url, out byte[] file)
         {
-            if (url == null) throw new ArgumentNullException(nameof(url));
-
             file = null;
+
+            TimeMetricTracker.Restart();
 
             try
             {
-                using var client = new HttpClient();
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                file = client.GetByteArrayAsync(url).GetAwaiter().GetResult();
-                stopwatch.Stop();
-                Logger.Log(LogLevel.Information, $"File '{url}' took {stopwatch.Elapsed:c} to download");
+                file = GetFileAsync(url).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
                 Logger.LogError("Could not download file from Url {0} - Exception: {1}", url, ex.ToString());
-
-                return false;
             }
 
-            return true;
+            TimeMetricTracker.Stop();
+
+            var fileSize = file?.Length ?? 0;
+            MetricService.Record(Metric.DownloadTime, TimeMetricTracker.Elapsed);
+            MetricService.Record(Metric.FileSize, fileSize);
+            return fileSize > 0;
         }
 
         protected bool TryPutFile(Uri url, byte[] file)
         {
-            if (url == null) throw new ArgumentNullException(nameof(url));
-            if (file == null) throw new ArgumentNullException(nameof(file));
+            bool success;
+            
+            TimeMetricTracker.Restart();
 
             try
             {
-                Logger.LogInformation("Uploading file of size '{0}' to url '{1}'", file.Length, url);
-
-                using var client = new HttpClient();
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                var response = client.PutAsync(url, new ByteArrayContent(file)).GetAwaiter().GetResult();
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    Logger.LogWarning("Could not put file to Url {0} - Status code: {1}", url, response.StatusCode);
-                    return false;
-                }
-
-                stopwatch.Stop();
-                Logger.LogInformation($"File '{url}' took {stopwatch.Elapsed:c} to download");
+                var response = PutFileAsync(url, file).GetAwaiter().GetResult();
+                success = response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
                 Logger.LogError("Could not put file to Url {0} - Exception: {1}", url, ex.ToString());
-
-                return false;
+                success = false;
             }
 
-            return true;
+            TimeMetricTracker.Stop();
+            MetricService.Record(Metric.UploadSize, file.Length);
+            MetricService.Record(Metric.UploadTime, TimeMetricTracker.Elapsed);
+            return success;
         }
 
-        protected string GetFileNameFromUrl(string url)
+        private static async Task<byte[]> GetFileAsync(Uri url)
         {
-            return url.Split('/').Last().Split('?')[0];
+            var request = new FlurlRequest(url);
+            var response = await request.SendAsync(HttpMethod.Get);
+
+            return await response.Content.ReadAsByteArrayAsync();
+        }
+        
+        private static async Task<HttpResponseMessage> PutFileAsync(Uri url, byte[] file)
+        {
+            var request = new FlurlRequest(url);
+            var response = await request.SendAsync(HttpMethod.Put, new ByteArrayContent(file));
+
+            return response;
         }
     }
 }

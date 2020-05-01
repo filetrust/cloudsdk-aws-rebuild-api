@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Glasswall.CloudSdk.AWS.Rebuild
@@ -8,6 +9,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild
     /// 
     /// FileTypeDetection::FileTypeDetection.LambdaEntryPoint::FunctionHandlerAsync
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class LambdaEntryPoint :
 
         // The base class must be set to match the AWS service invoking the Lambda function. If not Amazon.Lambda.AspNetCoreServer
@@ -30,8 +32,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild
         /// <param name="builder"></param>
         protected override void Init(IWebHostBuilder builder)
         {
-            builder
-                .UseStartup<Startup>();
+            builder.UseStartup<Startup>();
         }
     }
 }

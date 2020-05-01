@@ -13,11 +13,11 @@ namespace Glasswall.Core.Engine.FileProcessing
     {
         private readonly IGlasswallFileOperations _glasswallFileOperations;
         private readonly IAdaptor<ContentManagementFlags, string> _glasswallConfigurationAdaptor;
-        private readonly ILogger<FileAnalyser> _logger;
+        private readonly ILogger<FileProtector> _logger;
 
-        public FileProtector(IGlasswallFileOperations glasswallFileOperations, 
-            IAdaptor<ContentManagementFlags, string> glasswallConfigurationAdaptor, 
-            ILogger<FileAnalyser> logger)
+        public FileProtector(IGlasswallFileOperations glasswallFileOperations,
+            IAdaptor<ContentManagementFlags, string> glasswallConfigurationAdaptor,
+            ILogger<FileProtector> logger)
         {
             _glasswallFileOperations = glasswallFileOperations ?? throw new ArgumentNullException(nameof(glasswallFileOperations));
             _glasswallConfigurationAdaptor = glasswallConfigurationAdaptor ?? throw new ArgumentNullException(nameof(glasswallConfigurationAdaptor));
@@ -26,7 +26,7 @@ namespace Glasswall.Core.Engine.FileProcessing
 
         public IFileProtectResponse GetProtectedFile(ContentManagementFlags contentManagementFlags, string fileType, byte[] fileBytes)
         {
-            var response = new FileProtectResponse { ProtectedFile = Enumerable.Empty<byte>().ToArray()};
+            var response = new FileProtectResponse { ProtectedFile = Enumerable.Empty<byte>().ToArray() };
 
             var glasswallConfiguration = _glasswallConfigurationAdaptor.Adapt(contentManagementFlags);
             var configurationOutcome = _glasswallFileOperations.SetConfiguration(glasswallConfiguration);
@@ -36,6 +36,9 @@ namespace Glasswall.Core.Engine.FileProcessing
                 response.Outcome = configurationOutcome;
                 return response;
             }
+
+            var version = _glasswallFileOperations.GetLibraryVersion();
+            _logger.LogInformation($"Engine version: {version}");
 
             var engineOutcome = _glasswallFileOperations.ProtectFile(fileBytes, fileType, out var protectedFile);
             response.Outcome = engineOutcome;
