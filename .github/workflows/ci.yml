@@ -25,7 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - uses: actions/checkout@master
       - uses: appleboy/lambda-action@master
         name: AWS Lambda Deploy
         with:
