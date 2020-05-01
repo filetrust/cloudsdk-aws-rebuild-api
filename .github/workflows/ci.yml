@@ -28,7 +28,7 @@ jobs:
       - uses: appleboy/lambda-action@master
         name: AWS Lambda Deploy
         with:
-          zip_file: package.zip
+          zip_file: ./package.zip
           function_name: rebuild-stack-AspNetCoreFunction-S20I8J13N0XY
           aws_region: ${{ secrets.QA_REGION }}
           aws_access_key_id: ${{ secrets.QA_SECRET_ID }}
