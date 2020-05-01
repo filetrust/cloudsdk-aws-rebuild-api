@@ -22,7 +22,7 @@ jobs:
     needs: [build]
     steps:
       - uses: actions/checkout@master
-      - run: zip lambda.zip *
+      - run: zip -r lambda.zip *
       - uses: appleboy/lambda-action@master
         name: AWS Lambda Deploy
         with:
