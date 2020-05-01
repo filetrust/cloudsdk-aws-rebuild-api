@@ -34,16 +34,15 @@ jobs:
   ##end-to-end-test:
   ##  runs-on: ubuntu-latest
   ##  needs: [deploy-to-qa]
- ## deploy-to-prod1:
-  ##  runs-on: ubuntu-latest
-  ##  steps:
-    ##  - uses: actions/checkout@master
-   ##   - run: echo "THIS IS A TEST PACKAGE" > file.txt
-    ##  - run: zip lambda.zip file.txt
-    ##  - uses: stcalica/update-lambda
-    ##    with:
-     ##     package: lambda.zip
-     ##     function-name: TEST-FUNCTION
-     ##     AWS_REGION: ${{ secrets.PROD_REGION }}
-     ##     AWS_SECRET_ID: ${{ secrets.PROD_SECRET_ID }}
-    ##      AWS_SECRET_KEY: ${{ secrets.PROD_SECRET_KEY }}
+  merge-to-master:
+    runs-on: ubuntu-latest
+    needs: [deploy-to-qa]
+    steps:
+      - uses: actions/checkout@master
+      - name: Merge to master branch
+        uses: devmasx/merge-branch@v1.1.0
+        with:
+          key: now
+          target_branch: master
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}        
