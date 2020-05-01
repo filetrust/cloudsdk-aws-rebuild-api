@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Glasswall.CloudSdk.AWS.Common.Web;
 using Glasswall.Core.Engine;
 using Glasswall.Core.Engine.Common;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Glasswall.CloudSdk.AWS.Rebuild
 {
+    [ExcludeFromCodeCoverage]
     public class Startup : AwsCommonStartup
     {
         public Startup(IConfiguration configuration) : base(configuration)

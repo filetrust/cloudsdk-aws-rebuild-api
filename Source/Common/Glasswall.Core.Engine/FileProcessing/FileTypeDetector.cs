@@ -22,7 +22,6 @@ namespace Glasswall.Core.Engine.FileProcessing
             if (fileBytes == null) throw new ArgumentNullException(nameof(fileBytes));
 
             var fileType = FileType.Unknown;
-            var fileSize = fileBytes.Length;
 
             try
             {
@@ -40,7 +39,7 @@ namespace Glasswall.Core.Engine.FileProcessing
                 _logger.Log(LogLevel.Warning, 0, $"Defaulting 'FileType' to {FileType.Unknown} due to {e.Message}");
             }
 
-            return new FileTypeDetectionResponse(fileType, fileSize);
+            return new FileTypeDetectionResponse(fileType);
         }
     }
 }

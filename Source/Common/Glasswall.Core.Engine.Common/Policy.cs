@@ -4,7 +4,7 @@ namespace Glasswall.Core.Engine.Common
 {
     public static class Policy
     {
-        public static ContentManagementFlags DefaultContentManagementFlags => new ContentManagementFlags
+        public static ContentManagementFlags DefaultContentManagementFlags { get; } = new ContentManagementFlags
         {
             ExcelContentManagement = new ExcelContentManagement
             {

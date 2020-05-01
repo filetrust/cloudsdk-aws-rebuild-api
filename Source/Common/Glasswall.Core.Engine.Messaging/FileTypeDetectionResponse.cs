@@ -5,16 +5,13 @@ namespace Glasswall.Core.Engine.Messaging
     [Serializable]
     public class FileTypeDetectionResponse
     {
-        public FileTypeDetectionResponse(FileType fileType, int fileSize)
+        public FileTypeDetectionResponse(FileType fileType)
         {
-            this.FileType = fileType;
-            this.FileSize = fileSize;
+            FileType = fileType;
         }
 
         public FileType FileType { get; }
 
         public string FileTypeName => FileType.ToString();
-
-        public int FileSize { get; }
     }
 }
