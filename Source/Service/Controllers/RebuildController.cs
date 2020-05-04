@@ -1,11 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
+using System.Text;
 using Glasswall.CloudSdk.Common;
 using Glasswall.CloudSdk.Common.Web.Abstraction;
 using Glasswall.CloudSdk.Common.Web.Models;
 using Glasswall.Core.Engine.Common.FileProcessing;
 using Glasswall.Core.Engine.Common.PolicyConfig;
 using Glasswall.Core.Engine.Messaging;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -27,6 +31,31 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Controllers
             _glasswallVersionService = glasswallVersionService ?? throw new ArgumentNullException(nameof(glasswallVersionService));
             _fileTypeDetector = fileTypeDetector ?? throw new ArgumentNullException(nameof(fileTypeDetector));
             _fileProtector = fileProtector ?? throw new ArgumentNullException(nameof(fileProtector));
+        }
+
+        [HttpPost("file")]
+        public IActionResult RebuildFromFormFile([FromForm]ContentManagementFlags contentManagementFlags, [FromForm]IFormFile file)
+        {
+            try
+            {
+                byte[] fileBytes;
+                using (var ms = new MemoryStream())
+                {
+                    file.OpenReadStream().CopyTo(ms);
+                    fileBytes = ms.ToArray();
+                }
+
+                return Ok(new
+                {
+                    file.Length,
+                    contentManagementFlags,
+                    str = Encoding.UTF8.GetString(fileBytes)
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Ex =  ex.ToString() });
+            }
         }
 
         [HttpPost("base64")]
