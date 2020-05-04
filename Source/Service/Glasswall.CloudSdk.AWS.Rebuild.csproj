@@ -11,6 +11,17 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\lib\linux\SDK\libglasswall.classic.so" Link="lib/linux/libglasswall.classic.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\lib\windows\SDK\glasswall.classic.dll" Link="lib/windows/glasswall.classic.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="libfreetype.so.6" Link="libfreetype.so.6">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Common\Glasswall.CloudSdk.AWS.Common\Glasswall.CloudSdk.AWS.Common.csproj" />
     <ProjectReference Include="..\Common\Glasswall.CloudSdk.Common\Glasswall.CloudSdk.Common.csproj" />
     <ProjectReference Include="..\Common\Glasswall.Core.Engine.Common\Glasswall.Core.Engine.Common.csproj" />
