@@ -17,7 +17,7 @@
     <None Include="..\..\lib\windows\SDK\glasswall.classic.dll" Link="lib/windows/glasswall.classic.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\lib\linux\SDK\libfreetype.so.6" Link="libfreetype.so.6">
+    <None Include="libfreetype.so.6" Link="libfreetype.so.6">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
