@@ -40,7 +40,7 @@ jobs:
         uses: appleboy/lambda-action@master
         with:
           zip_file: package/package.zip
-          function_name: rebuild-stack-AspNetCoreFunction-S20I8J13N0XY
+          function_name: rebuild-stack-AspNetCoreFunction-C5H4HWRVTEGD
           aws_region: ${{ secrets.STAGE_REGION }}
           aws_access_key_id: ${{ secrets.STAGE_SECRET_ID }}
           aws_secret_access_key: ${{ secrets.STAGE_SECRET_KEY }}
