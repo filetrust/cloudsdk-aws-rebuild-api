@@ -21,7 +21,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests
         protected Mock<IMetricService> MetricServiceMock;
         protected Mock<ILogger<RebuildController>> LoggerMock;
 
-        protected void CommonSetup()
+        protected virtual void CommonSetup()
         {
             GlasswallVersionServiceMock = new Mock<IGlasswallVersionService>();
             FileTypeDetectorMock = new Mock<IFileTypeDetector>();

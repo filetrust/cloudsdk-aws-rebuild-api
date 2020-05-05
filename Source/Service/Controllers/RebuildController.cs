@@ -6,6 +6,7 @@ using Glasswall.CloudSdk.Common.Web.Models;
 using Glasswall.Core.Engine.Common.FileProcessing;
 using Glasswall.Core.Engine.Common.PolicyConfig;
 using Glasswall.Core.Engine.Messaging;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -27,6 +28,45 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Controllers
             _glasswallVersionService = glasswallVersionService ?? throw new ArgumentNullException(nameof(glasswallVersionService));
             _fileTypeDetector = fileTypeDetector ?? throw new ArgumentNullException(nameof(fileTypeDetector));
             _fileProtector = fileProtector ?? throw new ArgumentNullException(nameof(fileProtector));
+        }
+
+        [HttpPost("file")]
+        public IActionResult RebuildFromFormFile([FromForm]string contentManagementFlagJson, [FromForm][Required]IFormFile file)
+        {
+            try
+            {
+                Logger.LogInformation("'{0}' method invoked", nameof(RebuildFromFormFile));
+
+                ContentManagementFlags contentManagementFlags = null;
+                if (!string.IsNullOrWhiteSpace(contentManagementFlagJson))
+                    contentManagementFlags = Newtonsoft.Json.JsonConvert.DeserializeObject<ContentManagementFlags>(contentManagementFlagJson);
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                if (!TryReadFormFile(file, out var fileBytes))
+                    return BadRequest("Input file could not be read.");
+
+                RecordEngineVersion();
+
+                var fileType = DetectFromBytes(fileBytes);
+
+                if (fileType.FileType == FileType.Unknown)
+                    return UnprocessableEntity("File could not be determined to be a supported file");
+
+                var protectedFileResponse = RebuildFromBytes(
+                    contentManagementFlags, fileType.FileTypeName, fileBytes);
+
+                if (protectedFileResponse?.ProtectedFile == null)
+                    return UnprocessableEntity($"File could not be rebuilt. Engine status: {protectedFileResponse?.Outcome}");
+
+                return new FileContentResult(protectedFileResponse.ProtectedFile, "application/octet-stream") { FileDownloadName = file.FileName ?? "Unknown" };
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, $"Exception occured processing file: {e.Message}");
+                throw;
+            }
         }
 
         [HttpPost("base64")]

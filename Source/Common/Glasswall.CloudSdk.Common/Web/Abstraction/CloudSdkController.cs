@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Flurl.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -42,6 +44,31 @@ namespace Glasswall.CloudSdk.Common.Web.Abstraction
             MetricService.Record(Metric.Base64DecodeTime, TimeMetricTracker.Elapsed);
             MetricService.Record(Metric.FileSize, fileSize);
             return fileSize > 0;
+        }
+
+        protected bool TryReadFormFile(IFormFile formFile, out byte[] file)
+        {
+            file = null;
+
+            TimeMetricTracker.Restart();
+
+            try
+            {
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                file = ms.ToArray();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(LogLevel.Error, ex, "Could not parse input file.");
+            }
+
+            TimeMetricTracker.Stop();
+
+            var fileSize = formFile?.Length ?? 0;
+            MetricService.Record(Metric.FormFileReadTime, TimeMetricTracker.Elapsed);
+            MetricService.Record(Metric.FileSize, fileSize);
+            return file?.Length > 0;
         }
 
         protected bool TryGetFile(Uri url, out byte[] file)

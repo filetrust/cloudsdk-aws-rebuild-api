@@ -6,13 +6,13 @@
         "dotnet lambda help",
         "All the command line options for the Lambda command can be specified in this file."
     ],
-    "profile"     : "619711195898_GlasswallStaff",
+    "profile"     : "370377960141_Glasswall-Playground",
     "region"      : "us-west-2",
     "configuration" : "Release",
     "framework"     : "netcoreapp3.1",
     "s3-prefix"     : "rebuild/",
     "template"      : "serverless.template",
     "template-parameters" : "\"ShouldCreateBucket\"=\"true\";\"BucketName\"=\"\"",
-    "s3-bucket"           : "rebuild-stack",
-    "stack-name"          : "rebuild-stack"
+    "s3-bucket"           : "playground-stack-bucket",
+    "stack-name"          : "playground-rebuild3"
 }
