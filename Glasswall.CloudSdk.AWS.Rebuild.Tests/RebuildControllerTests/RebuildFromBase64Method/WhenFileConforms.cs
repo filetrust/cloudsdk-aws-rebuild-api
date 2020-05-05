@@ -49,12 +49,12 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
         }
 
         [Test]
-        public void FileContentResult_Is_Returned()
+        public void Ok_Is_Returned()
         {
             Assert.That(_result, Is.Not.Null);
-            Assert.That(_result, Is.TypeOf<FileContentResult>()
-                .With.Property(nameof(FileContentResult.FileContents))
-                .EqualTo(ExpectedDecoded));
+            Assert.That(_result, Is.TypeOf<OkObjectResult>()
+                .With.Property(nameof(OkObjectResult.Value))
+                .EqualTo(Convert.ToBase64String(ExpectedDecoded)));
         }
 
         [Test]

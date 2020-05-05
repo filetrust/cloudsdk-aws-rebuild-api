@@ -23,6 +23,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
         private const string Version = "Some Version";
         private FileTypeDetectionResponse _expectedType;
         private static readonly byte[] ExpectedDownloadFile = { 116, 101, 115, 116 };
+        private FileProtectResponse _expectedResponse;
 
         [OneTimeSetUp]
         public void OnetimeSetup()
@@ -53,10 +54,11 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
                     It.IsAny<ContentManagementFlags>(),
                     It.IsAny<string>(),
                     It.IsAny<byte[]>()))
-                .Returns(new FileProtectResponse
+                .Returns(_expectedResponse = new FileProtectResponse
                 {
                     Outcome = EngineOutcome.Error,
-                    ProtectedFile = null
+                    ProtectedFile = null,
+                    ErrorMessage = "Some error"
                 });
 
             _result = ClassInTest.RebuildUrlToUrl(new UrlToUrlRequest
@@ -72,7 +74,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
             Assert.That(_result, Is.Not.Null);
             Assert.That(_result, Is.TypeOf<UnprocessableEntityObjectResult>()
                 .With.Property(nameof(UnprocessableEntityObjectResult.Value))
-                .EqualTo($"File could not be rebuilt. Engine status: {EngineOutcome.Error}"));
+                .EqualTo($"File could not be rebuilt. Error Message: {_expectedResponse.ErrorMessage}"));
         }
 
         [Test]

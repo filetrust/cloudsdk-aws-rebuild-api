@@ -57,8 +57,14 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Controllers
                 var protectedFileResponse = RebuildFromBytes(
                     contentManagementFlags, fileType.FileTypeName, fileBytes);
 
-                if (protectedFileResponse?.ProtectedFile == null)
-                    return UnprocessableEntity($"File could not be rebuilt. Engine status: {protectedFileResponse?.Outcome}");
+                if (!string.IsNullOrWhiteSpace(protectedFileResponse.ErrorMessage))
+                {
+                    if (protectedFileResponse.IsDisallowed)
+                        return Ok(protectedFileResponse);
+
+                    return UnprocessableEntity(
+                        $"File could not be rebuilt. Error Message: {protectedFileResponse.ErrorMessage}");
+                }
 
                 return new FileContentResult(protectedFileResponse.ProtectedFile, "application/octet-stream") { FileDownloadName = file.FileName ?? "Unknown" };
             }
@@ -92,10 +98,16 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Controllers
                 var protectedFileResponse = RebuildFromBytes(
                     request.ContentManagementFlags, fileType.FileTypeName, file);
 
-                if (protectedFileResponse?.ProtectedFile == null)
-                    return UnprocessableEntity($"File could not be rebuilt. Engine status: {protectedFileResponse?.Outcome}");
+                if (!string.IsNullOrWhiteSpace(protectedFileResponse.ErrorMessage))
+                {
+                    if (protectedFileResponse.IsDisallowed)
+                        return Ok(protectedFileResponse);
 
-                return new FileContentResult(protectedFileResponse.ProtectedFile, "application/octet-stream") { FileDownloadName = request.FileName ?? "Unknown" };
+                    return UnprocessableEntity(
+                        $"File could not be rebuilt. Error Message: {protectedFileResponse.ErrorMessage}");
+                }
+
+                return Ok(Convert.ToBase64String(protectedFileResponse.ProtectedFile));
             }
             catch (Exception e)
             {
@@ -127,8 +139,14 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Controllers
                 var protectedFileResponse = RebuildFromBytes(
                     request.ContentManagementFlags, fileType.FileTypeName, file);
 
-                if (protectedFileResponse?.ProtectedFile == null)
-                    return UnprocessableEntity($"File could not be rebuilt. Engine status: {protectedFileResponse?.Outcome}");
+                if (!string.IsNullOrWhiteSpace(protectedFileResponse.ErrorMessage))
+                {
+                    if (protectedFileResponse.IsDisallowed)
+                        return Ok(protectedFileResponse);
+
+                    return UnprocessableEntity(
+                        $"File could not be rebuilt. Error Message: {protectedFileResponse.ErrorMessage}");
+                }
 
                 if (!TryPutFile(request.OutputPutUrl, protectedFileResponse.ProtectedFile))
                     return BadRequest("Could not put protected file to the supplied output url");
