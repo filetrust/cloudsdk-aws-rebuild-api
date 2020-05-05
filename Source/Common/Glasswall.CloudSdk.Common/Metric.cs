@@ -10,5 +10,6 @@ namespace Glasswall.CloudSdk.Common
         public const string Version = "gw-version";
         public const string RebuildTime = "gw-metric-rebuild";
         public const string UploadSize = "gw-metric-uploadsize";
+        public const string FormFileReadTime = "gw-metric-formfileread";
     }
 }

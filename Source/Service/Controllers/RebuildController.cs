@@ -1,8 +1,5 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Glasswall.CloudSdk.Common;
 using Glasswall.CloudSdk.Common.Web.Abstraction;
 using Glasswall.CloudSdk.Common.Web.Models;
@@ -34,27 +31,41 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Controllers
         }
 
         [HttpPost("file")]
-        public IActionResult RebuildFromFormFile([FromForm]ContentManagementFlags contentManagementFlags, [FromForm]IFormFile file)
+        public IActionResult RebuildFromFormFile([FromForm]string contentManagementFlagJson, [FromForm][Required]IFormFile file)
         {
             try
             {
-                byte[] fileBytes;
-                using (var ms = new MemoryStream())
-                {
-                    file.OpenReadStream().CopyTo(ms);
-                    fileBytes = ms.ToArray();
-                }
+                Logger.LogInformation("'{0}' method invoked", nameof(RebuildFromFormFile));
 
-                return Ok(new
-                {
-                    file.Length,
-                    contentManagementFlags,
-                    str = Encoding.UTF8.GetString(fileBytes)
-                });
+                ContentManagementFlags contentManagementFlags = null;
+                if (!string.IsNullOrWhiteSpace(contentManagementFlagJson))
+                    contentManagementFlags = Newtonsoft.Json.JsonConvert.DeserializeObject<ContentManagementFlags>(contentManagementFlagJson);
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                if (!TryReadFormFile(file, out var fileBytes))
+                    return BadRequest("Input file could not be read.");
+
+                RecordEngineVersion();
+
+                var fileType = DetectFromBytes(fileBytes);
+
+                if (fileType.FileType == FileType.Unknown)
+                    return UnprocessableEntity("File could not be determined to be a supported file");
+
+                var protectedFileResponse = RebuildFromBytes(
+                    contentManagementFlags, fileType.FileTypeName, fileBytes);
+
+                if (protectedFileResponse?.ProtectedFile == null)
+                    return UnprocessableEntity($"File could not be rebuilt. Engine status: {protectedFileResponse?.Outcome}");
+
+                return new FileContentResult(protectedFileResponse.ProtectedFile, "application/octet-stream") { FileDownloadName = file.FileName ?? "Unknown" };
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return Ok(new { Ex =  ex.ToString() });
+                Logger.LogError(e, $"Exception occured processing file: {e.Message}");
+                throw;
             }
         }
 
