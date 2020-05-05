@@ -57,7 +57,6 @@ jobs:
         with:
           repository: filetrust/rebuild-soft-launch-qa-test-automation
           token: ${{ secrets.TOKEN_MATT }}
-          path: tests
       - name: Set up Python 3.7 🐍
         uses: actions/setup-python@v2
         with:
@@ -65,7 +64,7 @@ jobs:
       - name: Install dependencies 🔧
         run: |
           python -m pip install --upgrade pip
-          pip install -r tests/requirements.txt
+          pip install -r requirements.txt
       - name: Run Tests 🧪
         run: python -m s93_test_automation --product "rebuild" --endpoint "${{ secrets.QA_API_ENDPOINT }}" --api_key "${{ secrets.QA_API_KEY }}" 
         
