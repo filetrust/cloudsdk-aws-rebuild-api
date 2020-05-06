@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using Glasswall.CloudSdk.Common;
 using Glasswall.CloudSdk.Common.Web.Models;
 using Glasswall.Core.Engine.Common;
@@ -24,6 +25,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
         private FileTypeDetectionResponse _expectedType;
         private static readonly byte[] ExpectedDownloadFile = { 116, 101, 115, 116 };
         private static readonly byte[] ExpectedUploadFile = { 116, 101  };
+        private EntityTagHeaderValue _expectedEtag;
 
         [OneTimeSetUp]
         public void OnetimeSetup()
@@ -47,7 +49,11 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
 
             HttpTest.ResponseQueue.Enqueue(new HttpResponseMessage
             {
-                StatusCode = HttpStatusCode.OK
+                StatusCode = HttpStatusCode.OK,
+                Headers =
+                {
+                    ETag = _expectedEtag  = new EntityTagHeaderValue("\"Some Tag\"", false)
+                }
             });
 
             FileProtectorMock.Setup(s => s.GetProtectedFile(
@@ -117,6 +123,12 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
                     s.Record(
                         It.Is<string>(x => x == Metric.UploadSize),
                         It.Is<int>(x => x == ExpectedUploadFile.Length)),
+                Times.Once);
+
+            MetricServiceMock.Verify(s =>
+                    s.Record(
+                        It.Is<string>(x => x == Metric.UploadEtag),
+                        It.Is<string>(x => x == _expectedEtag.Tag)),
                 Times.Once);
 
             MetricServiceMock.VerifyNoOtherCalls();

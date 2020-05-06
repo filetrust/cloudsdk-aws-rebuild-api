@@ -103,6 +103,9 @@ namespace Glasswall.CloudSdk.Common.Web.Abstraction
             try
             {
                 var response = PutFileAsync(url, file).GetAwaiter().GetResult();
+
+                MetricService.Record(Metric.UploadEtag, response.Headers?.ETag?.Tag);
+
                 success = response.IsSuccessStatusCode;
             }
             catch (Exception ex)
