@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFromBase64Method
 {
     [TestFixture]
-    public class WhenFileDoesNotConform : RebuildControllerTestBase
+    public class WhenFileIsDisallowed : RebuildControllerTestBase
     {
         private const string Version = "Some Version";
         private FileTypeDetectionResponse _expectedType;
@@ -41,7 +41,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
                 {
                     Outcome = EngineOutcome.Error,
                     ProtectedFile = null,
-                    ErrorMessage = "Some error"
+                    ErrorMessage = "banana has been removed because monkey content is set to disallowed"
                 });
 
             _result = ClassInTest.RebuildFromBase64(new Base64Request
@@ -51,12 +51,12 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
         }
 
         [Test]
-        public void UnprocessableEntityObjectResult_Is_Returned()
+        public void Ok_Is_Returned()
         {
             Assert.That(_result, Is.Not.Null);
-            Assert.That(_result, Is.TypeOf<UnprocessableEntityObjectResult>()
-                .With.Property(nameof(UnprocessableEntityObjectResult.Value))
-                .EqualTo($"File could not be rebuilt. Error Message: {_expectedProtectResponse.ErrorMessage}"));
+            Assert.That(_result, Is.TypeOf<OkObjectResult>()
+                .With.Property(nameof(OkObjectResult.Value))
+                .EqualTo(_expectedProtectResponse));
         }
 
         [Test]

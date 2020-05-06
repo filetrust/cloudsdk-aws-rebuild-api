@@ -19,6 +19,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
         private FileTypeDetectionResponse _expectedType;
 
         private IActionResult _result;
+        private FileProtectResponse _expectedResponse;
 
         [OneTimeSetUp]
         public void OnetimeSetup()
@@ -35,10 +36,11 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
                     It.IsAny<ContentManagementFlags>(),
                     It.IsAny<string>(),
                     It.IsAny<byte[]>()))
-                .Returns(new FileProtectResponse
+                .Returns(_expectedResponse = new FileProtectResponse
                 {
                     Outcome = EngineOutcome.Error,
-                    ProtectedFile = null
+                    ProtectedFile = null,
+                    ErrorMessage = "Some error"
                 });
 
             _result = ClassInTest.RebuildFromFormFile(null, ValidFormFileMock.Object);
@@ -50,7 +52,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
             Assert.That(_result, Is.Not.Null);
             Assert.That(_result, Is.TypeOf<UnprocessableEntityObjectResult>()
                 .With.Property(nameof(UnprocessableEntityObjectResult.Value))
-                .EqualTo($"File could not be rebuilt. Engine status: {EngineOutcome.Error}"));
+                .EqualTo($"File could not be rebuilt. Error Message: {_expectedResponse.ErrorMessage}"));
         }
 
         [Test]
