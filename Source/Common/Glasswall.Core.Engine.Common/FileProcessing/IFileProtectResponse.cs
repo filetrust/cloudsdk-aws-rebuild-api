@@ -4,5 +4,7 @@
     {
         byte[] ProtectedFile { get; set; }
         EngineOutcome Outcome { get; set; }
+        string ErrorMessage { get; set; }
+        bool IsDisallowed { get; }
     }
 }

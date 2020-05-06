@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using Glasswall.CloudSdk.Common;
 using Glasswall.CloudSdk.Common.Web.Models;
 using Glasswall.Core.Engine.Common;
@@ -16,16 +15,16 @@ using NUnit.Framework;
 namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrlToUrlTests
 {
     [TestFixture]
-    public class WhenFileConforms : RebuildControllerTestBase
+    public class WhenFileIsDisallowed : RebuildControllerTestBase
     {
+        private const string Version = "Some Version";
+        private FileTypeDetectionResponse _expectedType;
+        private FileProtectResponse _expectedProtectResponse;
+        private static readonly byte[] ExpectedDownloadFile = { 116, 101, 115, 116 };
+
         private IActionResult _result;
         private Uri _expectedInputUrl;
         private Uri _expectedOutputUrl;
-        private const string Version = "Some Version";
-        private FileTypeDetectionResponse _expectedType;
-        private static readonly byte[] ExpectedDownloadFile = { 116, 101, 115, 116 };
-        private static readonly byte[] ExpectedUploadFile = { 116, 101  };
-        private EntityTagHeaderValue _expectedEtag;
 
         [OneTimeSetUp]
         public void OnetimeSetup()
@@ -49,21 +48,18 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
 
             HttpTest.ResponseQueue.Enqueue(new HttpResponseMessage
             {
-                StatusCode = HttpStatusCode.OK,
-                Headers =
-                {
-                    ETag = _expectedEtag  = new EntityTagHeaderValue("\"Some Tag\"", false)
-                }
+                StatusCode = HttpStatusCode.OK
             });
 
             FileProtectorMock.Setup(s => s.GetProtectedFile(
                     It.IsAny<ContentManagementFlags>(),
                     It.IsAny<string>(),
                     It.IsAny<byte[]>()))
-                .Returns(new FileProtectResponse
+                .Returns(_expectedProtectResponse = new FileProtectResponse
                 {
-                    Outcome = EngineOutcome.Success,
-                    ProtectedFile = ExpectedUploadFile
+                    Outcome = EngineOutcome.Error,
+                    ProtectedFile = null,
+                    ErrorMessage = "banana has been removed because monkey content is set to disallowed"
                 });
 
             _result = ClassInTest.RebuildUrlToUrl(new UrlToUrlRequest
@@ -74,10 +70,12 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
         }
 
         [Test]
-        public void StatusCode_Is_Ok()
+        public void Ok_Is_Returned()
         {
             Assert.That(_result, Is.Not.Null);
-            Assert.That(_result, Is.TypeOf<OkResult>());
+            Assert.That(_result, Is.TypeOf<OkObjectResult>()
+                .With.Property(nameof(OkObjectResult.Value))
+                .EqualTo(_expectedProtectResponse));
         }
 
         [Test]
@@ -113,24 +111,6 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
                         It.Is<TimeSpan>(x => x > TimeSpan.Zero)),
                 Times.Once);
 
-            MetricServiceMock.Verify(s =>
-                    s.Record(
-                        It.Is<string>(x => x == Metric.UploadTime),
-                        It.Is<TimeSpan>(x => x > TimeSpan.Zero)),
-                Times.Once);
-
-            MetricServiceMock.Verify(s =>
-                    s.Record(
-                        It.Is<string>(x => x == Metric.UploadSize),
-                        It.Is<int>(x => x == ExpectedUploadFile.Length)),
-                Times.Once);
-
-            MetricServiceMock.Verify(s =>
-                    s.Record(
-                        It.Is<string>(x => x == Metric.UploadEtag),
-                        It.Is<string>(x => x == _expectedEtag.Tag)),
-                Times.Once);
-
             MetricServiceMock.VerifyNoOtherCalls();
         }
 
@@ -159,31 +139,6 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildUrl
                 Times.Once);
 
             FileProtectorMock.VerifyNoOtherCalls();
-        }
-
-        [Test]
-        public void Correct_Number_Of_Http_Calls_Are_Made()
-        {
-            HttpTest.ShouldHaveMadeACall().Times(2);
-        }
-
-        [Test]
-        public void File_Download_Was_Attempted()
-        {
-            HttpTest.ShouldHaveCalled(_expectedInputUrl.ToString())
-                .With(s => s.HttpStatus == HttpStatusCode.OK)
-                .With(s => s.Request.Method == HttpMethod.Get)
-                .Times(1);
-        }
-
-        [Test]
-        public void File_Upload_Was_Attempted()
-        {
-            HttpTest.ShouldHaveCalled(_expectedOutputUrl.ToString())
-                .With(s => s.HttpStatus == HttpStatusCode.OK)
-                .With(s => s.Request.Method == HttpMethod.Put)
-                .With(s => s.Request.Content is ByteArrayContent)
-                .Times(1);
         }
     }
 }

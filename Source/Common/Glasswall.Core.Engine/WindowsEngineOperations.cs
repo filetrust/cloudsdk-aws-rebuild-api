@@ -85,6 +85,12 @@ namespace Glasswall.Core.Engine
             return fileVersion.MarshalNativeToManaged();
         }
 
+        public string GetEngineError()
+        {
+            var response = GWFileErrorMsg();
+            return response.MarshalNativeToManaged();
+        }
+
         public FileType DetermineFileType(byte[] fileData)
         {
             var status = GWDetermineFileTypeFromFileInMem(fileData, fileData.Length);
@@ -157,7 +163,7 @@ namespace Glasswall.Core.Engine
                 result = GWMemoryToMemoryProtect(fileContent, (UIntPtr)fileContent.Length, nativeValue, out var outputBufferPtr, ref outputBufferSizePtr);
 
                 protectedFile = null;
-
+                
                 if (outputBufferPtr != IntPtr.Zero && outputBufferSizePtr != UIntPtr.Zero)
                 {
                     protectedFile = new byte[(int)outputBufferSizePtr];

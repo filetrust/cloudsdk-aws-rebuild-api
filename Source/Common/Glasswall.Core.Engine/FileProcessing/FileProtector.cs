@@ -46,7 +46,8 @@ namespace Glasswall.Core.Engine.FileProcessing
 
             if (engineOutcome != EngineOutcome.Success)
             {
-                _logger.Log(LogLevel.Error, $"Unable to protect file, reason: {engineOutcome}.");
+                response.ErrorMessage = _glasswallFileOperations.GetEngineError();
+                _logger.Log(LogLevel.Error, $"Unable to protect file, reason: {engineOutcome}. Error Message: {response.ErrorMessage}");
             }
 
             return response;

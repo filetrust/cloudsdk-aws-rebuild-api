@@ -1,27 +1,20 @@
 ﻿using System;
 using System.Linq;
 using Glasswall.CloudSdk.Common;
-using Glasswall.CloudSdk.Common.Web.Models;
-using Glasswall.Core.Engine.Common;
-using Glasswall.Core.Engine.Common.PolicyConfig;
-using Glasswall.Core.Engine.FileProcessing;
 using Glasswall.Core.Engine.Messaging;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 
-namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFromBase64Method
+namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFromFormFileMethod
 {
     [TestFixture]
-    public class WhenFileDoesNotConform : RebuildControllerTestBase
+    public class WhenFileTypeIsUnknown : RebuildFromFormFileMethodTestBase
     {
         private const string Version = "Some Version";
-        private FileTypeDetectionResponse _expectedType;
-        private FileProtectResponse _expectedProtectResponse;
-        private static readonly byte[] ExpectedDecoded = { 116, 101, 115, 116 };
 
         private IActionResult _result;
-
+        
         [OneTimeSetUp]
         public void OnetimeSetup()
         {
@@ -31,23 +24,9 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
                 .Returns(Version);
 
             FileTypeDetectorMock.Setup(s => s.DetermineFileType(It.IsAny<byte[]>()))
-                .Returns(_expectedType = new FileTypeDetectionResponse(FileType.Bmp));
+                .Returns(new FileTypeDetectionResponse(FileType.Unknown));
 
-            FileProtectorMock.Setup(s => s.GetProtectedFile(
-                    It.IsAny<ContentManagementFlags>(),
-                    It.IsAny<string>(),
-                    It.IsAny<byte[]>()))
-                .Returns(_expectedProtectResponse = new FileProtectResponse
-                {
-                    Outcome = EngineOutcome.Error,
-                    ProtectedFile = null,
-                    ErrorMessage = "Some error"
-                });
-
-            _result = ClassInTest.RebuildFromBase64(new Base64Request
-            {
-                Base64 = "dGVzdA=="
-            });
+            _result = ClassInTest.RebuildFromFormFile(null, ValidFormFileMock.Object);
         }
 
         [Test]
@@ -56,7 +35,7 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
             Assert.That(_result, Is.Not.Null);
             Assert.That(_result, Is.TypeOf<UnprocessableEntityObjectResult>()
                 .With.Property(nameof(UnprocessableEntityObjectResult.Value))
-                .EqualTo($"File could not be rebuilt. Error Message: {_expectedProtectResponse.ErrorMessage}"));
+                .EqualTo("File could not be determined to be a supported file"));
         }
 
         [Test]
@@ -64,14 +43,14 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
         {
             MetricServiceMock.Verify(s =>
                     s.Record(
-                        It.Is<string>(x => x == Metric.Base64DecodeTime),
+                        It.Is<string>(x => x == Metric.FormFileReadTime),
                         It.Is<TimeSpan>(x => x > TimeSpan.Zero)),
                 Times.Once);
 
             MetricServiceMock.Verify(s =>
                     s.Record(
                         It.Is<string>(x => x == Metric.FileSize),
-                        It.Is<int>(x => x == ExpectedDecoded.Length)),
+                        It.Is<long>(x => x == ValidFileBytes.Length)),
                 Times.Once);
 
             MetricServiceMock.Verify(s =>
@@ -83,12 +62,6 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
             MetricServiceMock.Verify(s =>
                     s.Record(
                         It.Is<string>(x => x == Metric.DetectFileTypeTime),
-                        It.Is<TimeSpan>(x => x > TimeSpan.Zero)),
-                Times.Once);
-
-            MetricServiceMock.Verify(s =>
-                    s.Record(
-                        It.Is<string>(x => x == Metric.RebuildTime),
                         It.Is<TimeSpan>(x => x > TimeSpan.Zero)),
                 Times.Once);
 
@@ -105,20 +78,13 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Tests.RebuildControllerTests.RebuildFro
         [Test]
         public void FileTypeDetection_Is_Retrieved()
         {
-            FileTypeDetectorMock.Verify(s => s.DetermineFileType(It.Is<byte[]>(x => x.SequenceEqual(ExpectedDecoded))), Times.Once);
+            FileTypeDetectorMock.Verify(s => s.DetermineFileType(It.Is<byte[]>(x => x.SequenceEqual(ValidFileBytes))), Times.Once);
             FileTypeDetectorMock.VerifyNoOtherCalls();
         }
 
         [Test]
-        public void File_Is_Rebuilt()
+        public void File_Is_Not_Rebuilt()
         {
-            FileProtectorMock.Verify(
-                s => s.GetProtectedFile(
-                    It.Is<ContentManagementFlags>(x => x == Policy.DefaultContentManagementFlags),
-                    It.Is<string>(x => x == _expectedType.FileTypeName),
-                    It.Is<byte[]>(x => x.SequenceEqual(ExpectedDecoded))),
-                Times.Once);
-
             FileProtectorMock.VerifyNoOtherCalls();
         }
     }

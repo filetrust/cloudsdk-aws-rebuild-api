@@ -85,6 +85,12 @@ namespace Glasswall.Core.Engine
             return fileVersion.MarshalNativeToManaged();
         }
 
+        public string GetEngineError()
+        {
+            var response = GWFileErrorMsg();
+            return response.MarshalNativeToManaged();
+        }
+
         public FileType DetermineFileType(byte[] fileData)
         {
             var status = GWDetermineFileTypeFromFileInMem(fileData, fileData.Length);
