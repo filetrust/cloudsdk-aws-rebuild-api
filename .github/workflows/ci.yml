@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: true
-        token: ${{ secrets.TOKEN_MATT }}
+        token: ${{ secrets.TOKEN_GITHUB }}
     - name: Setup .NET Core 🔧
       uses: actions/setup-dotnet@v1
       with:
@@ -75,4 +75,4 @@ jobs:
           type: now
           target_branch: master
         env:
-          GITHUB_TOKEN: ${{secrets.TOKEN_MATT}}        
+          GITHUB_TOKEN: ${{secrets.TOKEN_GITHUB}}        
