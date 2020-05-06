@@ -68,20 +68,20 @@ jobs:
       - name: Run Tests 🧪
         run: python -m s93_test_automation --product "rebuild" --endpoint "${{ secrets.STAGE_API_ENDPOINT }}" --api_key "${{ secrets.STAGE_API_KEY }}" 
 
-  ##deploy-to-prod-1:
-  ##  runs-on: ubuntu-latest
-  ##  needs: [package]
-  ##  steps:
-  ##    - name: Download package ⬇
-  ##      uses: actions/download-artifact@v1
-  ##      with:
-  ##        name: package
-  ##    - name: AWS Lambda Deploy 🚀
-  ##      uses: appleboy/lambda-action@master
-  ##      with:
-  ##        zip_file: package/package.zip
-  ##        function_name: rebuild-stack-AspNetCoreFunction-S20I8J13N0XY
-  ##        aws_region: ${{ secrets.PROD1_REGION }}
-  ##        aws_access_key_id: ${{ secrets.PROD1_SECRET_ID }}
-  ##        aws_secret_access_key: ${{ secrets.PROD1_SECRET_KEY }}
-  ##     
+  deploy-to-prod-1:
+    runs-on: ubuntu-latest
+    needs: [package]
+    steps:
+      - name: Download package ⬇
+        uses: actions/download-artifact@v1
+        with:
+          name: package
+      - name: AWS Lambda Deploy 🚀
+        uses: appleboy/lambda-action@master
+        with:
+          zip_file: package/package.zip
+          function_name: rebuild-stack-AspNetCoreFunction-1VS1BG993QOMQ
+          aws_region: ${{ secrets.PROD1_REGION }}
+          aws_access_key_id: ${{ secrets.PROD1_SECRET_ID }}
+          aws_secret_access_key: ${{ secrets.PROD1_SECRET_KEY }}
+       
