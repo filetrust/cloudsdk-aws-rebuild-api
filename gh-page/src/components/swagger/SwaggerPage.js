@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import yam from "./api.yaml";
 import SwaggerUI from "swagger-ui-react"
 import "swagger-ui-react/swagger-ui.css"
