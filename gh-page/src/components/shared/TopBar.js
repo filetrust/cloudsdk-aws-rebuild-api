@@ -1,10 +1,10 @@
 import React from "react";
-import logo from "../../img/logo.svg";
+import TopBarLogo from "./TopBarLogo.js";
 
-var TopBar = () => {
+const TopBar = () => {
     return (
         <div className="app-header">
-            <div className="logo"><img src={logo} alt="Logo" height="90" /></div>
+            <TopBarLogo />
         </div>
     );
 }
