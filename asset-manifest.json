@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/cloudsdk-aws-rebuild-api/static/css/main.e3e4fc63.chunk.css",
-    "main.js": "/cloudsdk-aws-rebuild-api/static/js/main.2d3c2150.chunk.js",
-    "main.js.map": "/cloudsdk-aws-rebuild-api/static/js/main.2d3c2150.chunk.js.map",
+    "main.css": "/cloudsdk-aws-rebuild-api/static/css/main.2d92ab73.chunk.css",
+    "main.js": "/cloudsdk-aws-rebuild-api/static/js/main.448bd14a.chunk.js",
+    "main.js.map": "/cloudsdk-aws-rebuild-api/static/js/main.448bd14a.chunk.js.map",
     "runtime-main.js": "/cloudsdk-aws-rebuild-api/static/js/runtime-main.0850f192.js",
     "runtime-main.js.map": "/cloudsdk-aws-rebuild-api/static/js/runtime-main.0850f192.js.map",
     "static/css/2.e4355e26.chunk.css": "/cloudsdk-aws-rebuild-api/static/css/2.e4355e26.chunk.css",
-    "static/js/2.56d0f344.chunk.js": "/cloudsdk-aws-rebuild-api/static/js/2.56d0f344.chunk.js",
-    "static/js/2.56d0f344.chunk.js.map": "/cloudsdk-aws-rebuild-api/static/js/2.56d0f344.chunk.js.map",
+    "static/js/2.ff36bcbb.chunk.js": "/cloudsdk-aws-rebuild-api/static/js/2.ff36bcbb.chunk.js",
+    "static/js/2.ff36bcbb.chunk.js.map": "/cloudsdk-aws-rebuild-api/static/js/2.ff36bcbb.chunk.js.map",
     "index.html": "/cloudsdk-aws-rebuild-api/index.html",
-    "precache-manifest.86c8e061074bf9bfc73b817d12438df6.js": "/cloudsdk-aws-rebuild-api/precache-manifest.86c8e061074bf9bfc73b817d12438df6.js",
+    "precache-manifest.78e85e69b22c3231bfbe70824c99929f.js": "/cloudsdk-aws-rebuild-api/precache-manifest.78e85e69b22c3231bfbe70824c99929f.js",
     "service-worker.js": "/cloudsdk-aws-rebuild-api/service-worker.js",
     "static/css/2.e4355e26.chunk.css.map": "/cloudsdk-aws-rebuild-api/static/css/2.e4355e26.chunk.css.map",
-    "static/css/main.e3e4fc63.chunk.css.map": "/cloudsdk-aws-rebuild-api/static/css/main.e3e4fc63.chunk.css.map",
+    "static/css/main.2d92ab73.chunk.css.map": "/cloudsdk-aws-rebuild-api/static/css/main.2d92ab73.chunk.css.map",
     "static/media/api.yaml": "/cloudsdk-aws-rebuild-api/static/media/api.8555e857.yaml",
     "static/media/App.css": "/cloudsdk-aws-rebuild-api/static/media/roboto-regular-webfont.d96d07c1.woff2",
     "static/media/logo.svg": "/cloudsdk-aws-rebuild-api/static/media/logo.6c8e5727.svg"
@@ -20,8 +20,8 @@
   "entrypoints": [
     "static/js/runtime-main.0850f192.js",
     "static/css/2.e4355e26.chunk.css",
-    "static/js/2.56d0f344.chunk.js",
-    "static/css/main.e3e4fc63.chunk.css",
-    "static/js/main.2d3c2150.chunk.js"
+    "static/js/2.ff36bcbb.chunk.js",
+    "static/css/main.2d92ab73.chunk.css",
+    "static/js/main.448bd14a.chunk.js"
   ]
 }
