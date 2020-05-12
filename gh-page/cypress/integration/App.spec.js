@@ -34,12 +34,6 @@ describe("Swagger Page", () => {
             cy.get(".opblock").eq(0).find(".parameter__name.required").contains("x-api-key");
             cy.get(".opblock").eq(0).find(".opblock-section .content-type").contains("application/json");
         });
-        
-        it("Should be able to submit a valid form", () => {
-            cy.get(".opblock").eq(0).find("input[placeholder=x-api-key]").type(apiKey);
-            cy.get(".opblock").eq(0).find("button.execute").click();
-            cy.get(".opblock").eq(0).contains("Server response");
-        });
     });
     
     describe("file endpoint", () => {
@@ -54,12 +48,6 @@ describe("Swagger Page", () => {
             cy.get(".opblock").eq(1).find(".parameter__name.required").contains("x-api-key");
             cy.get(".opblock").eq(1).find(".opblock-section .content-type").contains("multipart/form-data");
         });
-        
-        it("Should be able to submit a valid form", () => {
-            cy.get(".opblock").eq(1).find("input[placeholder=x-api-key]").type(apiKey);
-            cy.get(".opblock").eq(1).find("button.execute").click();
-            cy.get(".opblock").eq(1).contains("Server response");
-        });
     });
         
     describe("base64 endpoint", () => {
@@ -73,12 +61,6 @@ describe("Swagger Page", () => {
             cy.get(".opblock").eq(2).find(".opblock-summary-method").should("have.text", "POST")
             cy.get(".opblock").eq(2).find(".parameter__name.required").contains("x-api-key");
             cy.get(".opblock").eq(2).find(".opblock-section .content-type").contains("application/json");
-        });
-        
-        it("Should be able to submit a valid form", () => {
-            cy.get(".opblock").eq(2).find("input[placeholder=x-api-key]").type(apiKey);
-            cy.get(".opblock").eq(2).find("button.execute").click();
-            cy.get(".opblock").eq(2).contains("Server response");
         });
     });
 });
