@@ -1,4 +1,4 @@
-name: Gated Build
+name: Gated Javascript Build
 
 on:
   pull_request:
