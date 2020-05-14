@@ -39,25 +39,7 @@ paths:
                 style: form
       responses:
         200:    # status code
-          description: OK - The requested Base64 was successfully decoded and processed by the Glasswall d-FIRST™ Engine
-          content: 
-            text/plain:
-              schema:
-                description: The body is a rebuilt file, Base64 encoded.
-                type: string
-                format: base64
-                example: "0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAAUgAAAAAAAAAAEAAAAAAAAAEAAAD+////AAAAAFMAAAD//////////////////////////////..."
-            application/json:
-              schema:
-                description: This is returned when the request was successful but the content management policy has is set to disallow content found in the file.
-                type: object
-                properties:
-                  IsDisallowed:
-                    type: boolean
-                    description: A value indicating whether the file was disallowed by the Content Management Policy
-                  ErrorMessage:
-                    type: string
-                    description: A description of the reason the file was not protected.
+          description: OK - The requested file was successfully processed by the Glasswall d-FIRST™ Engine
           headers:
             gw-metric-detect:
               description: A header containing the time it took to detect the file type.
