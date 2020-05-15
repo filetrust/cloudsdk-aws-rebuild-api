@@ -28,8 +28,9 @@
         Elf = 33,
         Mp4 = 34,
         Mp3 = 35,
-        Wav = 36,
-        Mpg = 37,
-        Coff = 38
+        Mp2 = 36,
+        Wav = 37,
+        Mpg = 38,
+        Coff = 39
     }
 }
