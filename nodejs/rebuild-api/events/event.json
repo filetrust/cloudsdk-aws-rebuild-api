@@ -1,62 +1,121 @@
 {
-  "body": "{\"message\": \"hello world\"}",
-  "resource": "/{proxy+}",
-  "path": "/path/to/resource",
+  "resource": "/api/v1/rebuild/url",
+  "path": "/api/v1/rebuild/url",
   "httpMethod": "POST",
-  "isBase64Encoded": false,
-  "queryStringParameters": {
-    "foo": "bar"
-  },
-  "pathParameters": {
-    "proxy": "/path/to/resource"
-  },
-  "stageVariables": {
-    "baz": "qux"
-  },
   "headers": {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    "Accept-Encoding": "gzip, deflate, sdch",
-    "Accept-Language": "en-US,en;q=0.8",
-    "Cache-Control": "max-age=0",
-    "CloudFront-Forwarded-Proto": "https",
-    "CloudFront-Is-Desktop-Viewer": "true",
-    "CloudFront-Is-Mobile-Viewer": "false",
-    "CloudFront-Is-SmartTV-Viewer": "false",
-    "CloudFront-Is-Tablet-Viewer": "false",
-    "CloudFront-Viewer-Country": "US",
-    "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
-    "Upgrade-Insecure-Requests": "1",
-    "User-Agent": "Custom User Agent String",
-    "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
-    "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
-    "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
-    "X-Forwarded-Port": "443",
-    "X-Forwarded-Proto": "https"
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Cache-Control": "no-cache",
+      "CloudFront-Forwarded-Proto": "https",
+      "CloudFront-Is-Desktop-Viewer": "true",
+      "CloudFront-Is-Mobile-Viewer": "false",
+      "CloudFront-Is-SmartTV-Viewer": "false",
+      "CloudFront-Is-Tablet-Viewer": "false",
+      "CloudFront-Viewer-Country": "GB",
+      "Content-Type": "application/json",
+      "Host": "qra0z8mltg.execute-api.us-west-2.amazonaws.com",
+      "Postman-Token": "4cb5d763-bd2a-4ca9-af2e-8b42c9794ee2",
+      "User-Agent": "PostmanRuntime/7.24.1",
+      "Via": "1.1 652ce435ffe0a124734e5a7fa667b63c.cloudfront.net (CloudFront)",
+      "X-Amz-Cf-Id": "Y1mS340TWDVrRKVFhF-0XqkGV6Cwq8UUtxBxlhogBAGiuo6btVly8g==",
+      "X-Amzn-Trace-Id": "Root=1-5ec3e22c-7ae63dc8c580c630c1887142",
+      "X-Forwarded-For": "86.190.68.156, 64.252.152.95",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
   },
+  "multiValueHeaders": {
+      "Accept": [
+          "*/*"
+      ],
+      "Accept-Encoding": [
+          "gzip, deflate, br"
+      ],
+      "Cache-Control": [
+          "no-cache"
+      ],
+      "CloudFront-Forwarded-Proto": [
+          "https"
+      ],
+      "CloudFront-Is-Desktop-Viewer": [
+          "true"
+      ],
+      "CloudFront-Is-Mobile-Viewer": [
+          "false"
+      ],
+      "CloudFront-Is-SmartTV-Viewer": [
+          "false"
+      ],
+      "CloudFront-Is-Tablet-Viewer": [
+          "false"
+      ],
+      "CloudFront-Viewer-Country": [
+          "GB"
+      ],
+      "Content-Type": [
+          "application/json"
+      ],
+      "Host": [
+          "qra0z8mltg.execute-api.us-west-2.amazonaws.com"
+      ],
+      "Postman-Token": [
+          "4cb5d763-bd2a-4ca9-af2e-8b42c9794ee2"
+      ],
+      "User-Agent": [
+          "PostmanRuntime/7.24.1"
+      ],
+      "Via": [
+          "1.1 652ce435ffe0a124734e5a7fa667b63c.cloudfront.net (CloudFront)"
+      ],
+      "X-Amz-Cf-Id": [
+          "Y1mS340TWDVrRKVFhF-0XqkGV6Cwq8UUtxBxlhogBAGiuo6btVly8g=="
+      ],
+      "X-Amzn-Trace-Id": [
+          "Root=1-5ec3e22c-7ae63dc8c580c630c1887142"
+      ],
+      "X-Forwarded-For": [
+          "86.190.68.156, 64.252.152.95"
+      ],
+      "X-Forwarded-Port": [
+          "443"
+      ],
+      "X-Forwarded-Proto": [
+          "https"
+      ]
+  },
+  "queryStringParameters": null,
+  "multiValueQueryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
   "requestContext": {
-    "accountId": "123456789012",
-    "resourceId": "123456",
-    "stage": "prod",
-    "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
-    "requestTime": "09/Apr/2015:12:34:56 +0000",
-    "requestTimeEpoch": 1428582896000,
-    "identity": {
-      "cognitoIdentityPoolId": null,
-      "accountId": null,
-      "cognitoIdentityId": null,
-      "caller": null,
-      "accessKey": null,
-      "sourceIp": "127.0.0.1",
-      "cognitoAuthenticationType": null,
-      "cognitoAuthenticationProvider": null,
-      "userArn": null,
-      "userAgent": "Custom User Agent String",
-      "user": null
-    },
-    "path": "/prod/path/to/resource",
-    "resourcePath": "/{proxy+}",
-    "httpMethod": "POST",
-    "apiId": "1234567890",
-    "protocol": "HTTP/1.1"
-  }
+      "resourceId": "em8ehd",
+      "resourcePath": "/api/v1/rebuild",
+      "httpMethod": "POST",
+      "extendedRequestId": "MyBG6F8VPHcFjrA=",
+      "requestTime": "19/May/2020:13:42:04 +0000",
+      "path": "/Prod/api/v1/rebuild",
+      "accountId": "370377960141",
+      "protocol": "HTTP/1.1",
+      "stage": "Prod",
+      "domainPrefix": "qra0z8mltg",
+      "requestTimeEpoch": 1589895724187,
+      "requestId": "eecf14cb-08fe-4b45-ad18-21f68c45903d",
+      "identity": {
+          "cognitoIdentityPoolId": null,
+          "accountId": null,
+          "cognitoIdentityId": null,
+          "caller": null,
+          "sourceIp": "86.190.68.156",
+          "principalOrgId": null,
+          "accessKey": null,
+          "cognitoAuthenticationType": null,
+          "cognitoAuthenticationProvider": null,
+          "userArn": null,
+          "userAgent": "PostmanRuntime/7.24.1",
+          "user": null
+      },
+      "domainName": "qra0z8mltg.execute-api.us-west-2.amazonaws.com",
+      "apiId": "qra0z8mltg"
+  },
+  "body": "{\r\n    \"InputGetUrl\": \"https:\/\/www.maldonandburnhamstandard.co.uk\/resources\/images\/10955098.jpg?display=1&htype=0&type=responsive-gallery\",\r\n    \"OutputPutUrl\": \"http://8c04432d.ngrok.io/api/rebuild/file\",\r\n    \"ContentManagementFlags\": {\r\n        \"PdfContentManagement\": {\r\n            \"Metadata\": 0,\r\n            \"InternalHyperlinks\": 1,\r\n            \"ExternalHyperlinks\": 0,\r\n            \"EmbeddedFiles\": 0,\r\n            \"EmbeddedImages\": 0,\r\n            \"Javascript\": 0,\r\n            \"Acroform\": 0,\r\n            \"ActionsAll\": 0\r\n        },\r\n        \"ExcelContentManagement\": {\r\n            \"Metadata\": 0,\r\n            \"InternalHyperlinks\": 0,\r\n            \"ExternalHyperlinks\": 0,\r\n            \"EmbeddedFiles\": 0,\r\n            \"EmbeddedImages\": 0,\r\n            \"DynamicDataExchange\": 0,\r\n            \"Macros\": 0,\r\n            \"ReviewComments\": 0\r\n        },\r\n        \"PowerPointContentManagement\": {\r\n            \"Metadata\": 0,\r\n            \"InternalHyperlinks\": 0,\r\n            \"ExternalHyperlinks\": 0,\r\n            \"EmbeddedFiles\": 0,\r\n            \"EmbeddedImages\": 0,\r\n            \"Macros\": 0,\r\n            \"ReviewComments\": 0\r\n        },\r\n        \"WordContentManagement\": {\r\n            \"Metadata\": 0,\r\n            \"InternalHyperlinks\": 0,\r\n            \"ExternalHyperlinks\": 0,\r\n            \"EmbeddedFiles\": 0,\r\n            \"EmbeddedImages\": 0,\r\n            \"DynamicDataExchange\": 0,\r\n            \"Macros\": 0,\r\n            \"ReviewComments\": 0\r\n        }\r\n    }\r\n}",
+  "isBase64Encoded": false
 }

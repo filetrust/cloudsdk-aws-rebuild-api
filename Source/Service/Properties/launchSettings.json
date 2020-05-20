@@ -4,7 +4,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:53618/",
-      "sslPort": 44344
+      "sslPort": 0
     }
   },
   "profiles": {
@@ -25,9 +25,9 @@
     },
     "Mock Lambda Test Tool": {
       "commandName": "Executable",
+      "executablePath": "C:\\Users\\%USERNAME%\\.dotnet\\tools\\dotnet-lambda-test-tool-3.1.exe",
       "commandLineArgs": "--port 5050",
-      "workingDirectory": ".\\bin\\$(Configuration)\\netcoreapp3.1",
-      "executablePath": "C:\\Users\\%USERNAME%\\.dotnet\\tools\\dotnet-lambda-test-tool-3.1.exe"
+      "workingDirectory": ".\\bin\\$(Configuration)\\netcoreapp3.1"
     }
   }
 }

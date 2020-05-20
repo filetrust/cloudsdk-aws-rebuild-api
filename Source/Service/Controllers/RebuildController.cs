@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Threading.Tasks;
 using Glasswall.CloudSdk.Common;
 using Glasswall.CloudSdk.Common.Web.Abstraction;
 using Glasswall.CloudSdk.Common.Web.Models;
@@ -158,6 +160,18 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Controllers
                 Logger.LogError(e, $"Exception occured processing file: {e.Message}");
                 throw;
             }
+        }
+
+        [HttpPut("file")]
+        public async Task<IActionResult> DummyPut()
+        {
+            using (var ms = new MemoryStream())
+            {
+                await Request.Body.CopyToAsync(ms);
+                return Ok(ms.Length);
+            }
+            //if (!TryReadFormFile(file, out var fileBytes))
+            //    return BadRequest("Input file could not be read.");
         }
 
         private void RecordEngineVersion()

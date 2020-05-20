@@ -1,91 +1,59 @@
+const {
+    handleUrlRequest
+} = require("./rebuild-api/rebuildUrlHandler");
+
 let response;
 
-const Engine = require('./engine.js');
-const Metric = require('./metric.js');
-const { fileTypes, parse } = require("./fileTypes.js");
-const fs = require("fs");
+const getEventHandler = (event) => {
+    const notFoundHandler = (_) => {
+        return {
+            statusCode: 404
+        }
+    };
+    
+    const notImplementedHandler = (_) => {
+        return {
+            statusCode: 418,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                errorMessage: "Not Implemented"
+            })
+        }
+    };
 
+    if (event.path == "/api/v1/rebuild/url")
+        return handleUrlRequest;
+    
+    if (event.path == "/api/v1/rebuild/base64")
+        return notImplementedHandler;
 
-const getFileContents = (filePath) => {
-    return new Promise((resolve, reject) => {
-        fs.readFile(filePath, (err, buffer) => {
-            if (err) {
-                reject(err);
-            }
+    if (event.path == "/api/v1/rebuild/file")
+        return notImplementedHandler;
 
-            console.log("File received, size: " + buffer.length)
-            resolve(buffer);
-        });
-    });
+    if (event.path == "/api/v1/dummy/put")
+        return notImplementedHandler;
+
+    return notFoundHandler;
 }
 
 exports.lambdaHandler = async (event, context) => {
     try {
-        let responseHeaders = {
-            [Metric.DetectFileTypeTime]: Metric.DefaultValue,
-            [Metric.Base64DecodeTime]: Metric.DefaultValue,
-            [Metric.FileSize]: Metric.DefaultValue,
-            [Metric.DownloadTime]: Metric.DefaultValue,
-            [Metric.Version]: Metric.DefaultValue,
-            [Metric.RebuildTime]: Metric.DefaultValue,
-            [Metric.FormFileReadTime]: Metric.DefaultValue,
-            [Metric.UploadSize]: Metric.DefaultValue,
-            [Metric.UploadTime]: Metric.DefaultValue,
-            [Metric.UploadEtag]: Metric.DefaultValue,
-            [Metric.FileType]: Metric.DefaultValue
-        };
-
-        const engine = new Engine();
-        const version = engine.GetLibraryVersion();
-
-        responseHeaders[Metric.Version] = version;
-
-        const fileBuffer = await getFileContents("C:\\Users\\seb\\Documents\\Scripts\\testfiles\\deepfried_1585147410647.png");
-
-        responseHeaders[Metric.FileSize] = fileBuffer.length;
-
-        const fileType = engine.DetermineFileType(fileBuffer);
-
-        responseHeaders[Metric.FileType] = fileType.fileTypeName;
-
-        if (fileType.fileTypeName === parse(fileTypes.Unknown)) {
-            return {
-                'statusCode': 422,
-                'body': JSON.stringify({
-                    message: "File could not be determined to be a supported file"
-                })
-            };
-        }
-
-        const protectedFileResponse = engine.GWMemoryToMemoryProtect(fileBuffer, fileType.fileTypeName);
-
-        if (!protectedFileResponse || !protectedFileResponse.protectedFile || protectedFile.errorMessage) {
-            return {
-                'statusCode': 422,
-                'body': JSON.stringify({
-                    message: protectedFileResponse.errorMessage
-                })
-            };
-
-        }
-
-        responseHeaders["Content-Type"] = "application/octet-stream";
-
-        this.engine.Close();
-
-        return {
-            'statusCode': 200,
-            'body': JSON.stringify({
-                message: 'hello world',
-                // location: ret.data.trim()
-            }),
-            "headers": responseHeaders
-        };
+        const eventHandler = getEventHandler(event);
+        response = eventHandler(event, context);
     }
     catch (err) {
-        console.log(err);
-        return {
-            'statusCode': 500
+        response = {
+            statusCode: 418,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                errorMessage: err
+            })
         }
     }
+
+    return response;
 };
