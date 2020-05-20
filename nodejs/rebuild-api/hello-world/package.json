@@ -13,6 +13,7 @@
     "gyp": "^0.5.0",
     "iconv-lite": "^0.5.1",
     "moment": "^2.25.3",
+    "moment-duration-format": "^2.3.2",
     "node-fetch": "^2.6.0",
     "object-to-xml": "^2.0.0",
     "ref-array-napi": "^1.2.1",

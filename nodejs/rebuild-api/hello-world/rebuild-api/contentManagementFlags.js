@@ -14,14 +14,14 @@ const cloudFlagToEngineFlag = (cloudFlag) => {
 }
 
 const valueOrDefault = (flag) => {
-    if (!flag)
+    if (flag === undefined || flag === null)
         return cloudFlagToEngineFlag(1);
 
     return cloudFlagToEngineFlag(flag);
 }
 
 class ContentManagementFlags {
-    ToEngineXml = () => {
+    Adapt = () => {
         if (!this.PdfContentManagement)
             this.PdfContentManagement = {};
 

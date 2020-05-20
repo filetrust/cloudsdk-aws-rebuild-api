@@ -7,4 +7,7 @@ const event = JSON.parse(eventString);
 
 lambdaHandler(event, console).then(response => {
     console.log(response);
+    Object.keys(response.headers).forEach(header => {
+        console.log(`${header} - ${response.headers[header]}`)
+    });
 });

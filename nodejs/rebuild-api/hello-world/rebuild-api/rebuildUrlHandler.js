@@ -1,14 +1,21 @@
 const fetch = require("node-fetch");
 const form_data = require("form-data");
 
-const Engine = require('./engine');
+const EngineService = require('./engineService');
 const Metric = require('./metric');
 const Enum = require("./enumHelper");
 const FileType = require("./fileType");
 const EngineOutcome = require("./engineOutcome");
 const ContentManagementFlags = require("./contentManagementFlags");
+const Timer = require("./timer");
 
 const handleUrlRequest = async (event, context) => {
+    const engineLoadTimer = Timer.StartNew();
+    let engineService = new EngineService();
+    const engineLoadTime = engineLoadTimer.Elapsed();
+
+    const timer = Timer.StartNew();
+
     let response = {
         statusCode: 400,
         headers: {
@@ -22,36 +29,33 @@ const handleUrlRequest = async (event, context) => {
             [Metric.UploadSize]: Metric.DefaultValue,
             [Metric.UploadTime]: Metric.DefaultValue,
             [Metric.UploadEtag]: Metric.DefaultValue,
-            [Metric.FileType]: Metric.DefaultValue
+            [Metric.FileType]: Metric.DefaultValue,
+            [Metric.EngineLoadTime]: Metric.DefaultValue
         },
         body: '{ "errorMessage": "this should not be here" }'
     };
 
-    const engine = new Engine();
+    response.headers[Metric.EngineLoadTime] = engineLoadTime;
 
     try {
-        const version = engine.GetLibraryVersion();
+        const version = engineService.GetLibraryVersion();
         response.headers[Metric.Version] = version;
 
         const { errorMessage, errors, payload } = validateEvent(event);
 
-        if (!payload)
-        {
+        if (!payload) {
             response.statusCode = 400;
-            response.body = JSON.stringify({errorMessage, errors});
+            response.body = JSON.stringify({ errorMessage, errors });
             return response;
         }
 
-        let cmp = payload.ContentManagementFlags;
-        let defaultPolicy = new ContentManagementFlags();
-        Object.assign(defaultPolicy, cmp);
-
         let fileBuffer;
-        
+
         try {
+            timer.Restart();
             fileBuffer = await downloadFile(payload.InputGetUrl);
+            response.headers[Metric.DownloadTime] = timer.Elapsed();
             response.headers[Metric.FileSize] = fileBuffer.length;
-            console.log("Input file length: '" + fileBuffer.length + "'");
         }
         catch (err) {
             console.log(err);
@@ -70,8 +74,9 @@ const handleUrlRequest = async (event, context) => {
             return response;
         }
 
-        const fileType = engine.DetermineFileType(fileBuffer);
-
+        timer.Restart();
+        const fileType = engineService.GetFileType(fileBuffer);
+        response.headers[Metric.DetectFileTypeTime] = timer.Elapsed();
         response.headers[Metric.FileType] = fileType.fileTypeName;
 
         if (fileType.fileTypeName === Enum.GetString(FileType, FileType.Unknown)) {
@@ -82,12 +87,19 @@ const handleUrlRequest = async (event, context) => {
             return response;
         }
 
-        engine.SetConfiguration();
+        let contentManagementFlags = new ContentManagementFlags();
 
-        const protectedFileResponse = engine.GWMemoryToMemoryProtect(fileBuffer, fileType.fileTypeName);
+        if (payload.ContentManagementFlags)
+            Object.assign(contentManagementFlags, payload.ContentManagementFlags);
+
+        engineService.SetConfiguration(contentManagementFlags);
+
+        timer.Restart();
+        const protectedFileResponse = engineService.Rebuild(fileBuffer, fileType.fileTypeName);
+        response.headers[Metric.RebuildTime] = timer.Elapsed();
 
         if (!protectedFileResponse || protectedFileResponse.engineOutcome !== EngineOutcome.Success) {
-            if (response.errorMessage.toLowerCase().includes("disallow")) {
+            if (response.errorMessage && response.errorMessage.toLowerCase().includes("disallow")) {
                 response.statusCode = 200;
             }
             else {
@@ -106,7 +118,12 @@ const handleUrlRequest = async (event, context) => {
 
         response.headers[Metric.UploadSize] = protectedFileResponse.protectedFile.length;
         console.log("Output file length: '" + protectedFileResponse.protectedFile.length + "'");
-        await uploadFile(payload.OutputPutUrl, protectedFileResponse.protectedFile);
+
+        timer.Restart();
+        const etag = await uploadFile(payload.OutputPutUrl, protectedFileResponse.protectedFile);
+        response.headers[Metric.UploadTime] = timer.Elapsed();
+        response.headers[Metric.UploadEtag] = etag;
+
         response.statusCode = 200;
         response.body = "";
     }
@@ -121,13 +138,12 @@ const handleUrlRequest = async (event, context) => {
         return response;
     }
     finally {
-        engine.GWFileDone();
-        engine.Close();
+        engineService.Finalise();
+        engineService = null;
     }
 
     return response;
 }
-
 
 const downloadFile = (fileUrl) => {
     const options = {
@@ -153,6 +169,8 @@ const uploadFile = (fileUrl, buf) => {
         .then(response => {
             if (!response.ok)
                 throw response.statusText;
+
+            return response.headers.get("etag");
         });
 }
 
@@ -183,8 +201,7 @@ const validateEvent = (event) => {
     if (!payload.OutputPutUrl)
         errors.push({ OutputPutUrl: "Not Supplied" });
 
-    if (errors.length)
-    {
+    if (errors.length) {
         return {
             errorMessage: "There were missing options supplied in the body.",
             errors

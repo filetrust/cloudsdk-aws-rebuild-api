@@ -168,8 +168,10 @@ namespace Glasswall.CloudSdk.AWS.Rebuild.Controllers
             using (var ms = new MemoryStream())
             {
                 await Request.Body.CopyToAsync(ms);
+                Response.Headers.Add("ETag", "\"banana\"");
                 return Ok(ms.Length);
             }
+
             //if (!TryReadFormFile(file, out var fileBytes))
             //    return BadRequest("Input file could not be read.");
         }
