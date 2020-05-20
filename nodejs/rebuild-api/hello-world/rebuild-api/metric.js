@@ -13,16 +13,16 @@ const Metric = {
     EngineLoadTime: "gw-engine-load-time",
     
     StartHeapUsed:     "gw-memory-heap-used-at-start",
-    StartHeapTotal:    "gw-memory-heap-used-at-start",
-    StartRSS:          "gw-memory-heap-used-at-start",
-    StartExternal:     "gw-memory-heap-used-at-start",
-    StartArrayBuffers: "gw-memory-heap-used-at-start",
+    StartHeapTotal:    "gw-memory-heap-total-used-at-start",
+    StartRSS:          "gw-memory-rss-used-at-start",
+    StartExternal:     "gw-memory-external-used-at-start",
+    StartArrayBuffers: "gw-memory-array-buffers-used-at-start",
 
     EndHeapUsed:     "gw-memory-heap-used-at-end",
-    EndHeapTotal:    "gw-memory-heap-used-at-end",
-    EndRSS:          "gw-memory-heap-used-at-end",
-    EndExternal:     "gw-memory-heap-used-at-end",
-    EndArrayBuffers: "gw-memory-heap-used-at-end",
+    EndHeapTotal:    "gw-memory-heap-total-used-at-end",
+    EndRSS:          "gw-memory-rss-used-at-end",
+    EndExternal:     "gw-memory-external-used-at-end",
+    EndArrayBuffers: "gw-memory-array-buffers-used-at-end",
     
     DefaultValue:  "NOT SET"
 };
