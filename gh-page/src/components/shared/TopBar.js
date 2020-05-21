@@ -7,6 +7,6 @@ const TopBar = () => {
             <TopBarLogo />
         </div>
     );
-}
+};
 
 export default TopBar;
