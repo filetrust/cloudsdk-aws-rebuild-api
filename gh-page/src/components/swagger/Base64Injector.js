@@ -1,24 +1,13 @@
 const Base64Injector = {
-    TryInjectSelectedFileAsBase64
+    GetBase64
 }
 
-async function TryInjectSelectedFileAsBase64(request) {
-    if (!request.url.toLowerCase().includes("base64"))
-        return request;
-
-    const input = document.getElementById("base64Input");
-
+async function GetBase64(input) {
     if (!input || !input.value || input.value === "")
-        return request;
+        return "";
 
     const fileBuffer = await _readInputFileBuffer(input.files[0])
-    const fileBase64 = _arrayBufferToBase64(fileBuffer);
-
-    var bodyParsed = JSON.parse(request.body);
-    bodyParsed.Base64 = fileBase64;
-
-    request.body = JSON.stringify(bodyParsed);
-    return request;
+    return _arrayBufferToBase64(fileBuffer);
 }
 
 async function _readInputFileBuffer(file) {

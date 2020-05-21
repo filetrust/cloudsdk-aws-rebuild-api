@@ -122,7 +122,7 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: The binary contents of the selected file will be uploaded to the server.
+                  description: The binary contents of the selected file will be uploaded to the server. The Total supported request size of the API gateway is 6MB, therefore the file contents must also be less than 6MB.
                 contentManagementFlagJson:
                   $ref: '#/Models/ContentManagementPolicy'
               required:
@@ -205,7 +205,7 @@ paths:
         The request body contains the Base64 representation of the file and Glasswall Content Management Flags with a 'Content-Type' of 'application/json'. 
         A Base64 Representation of the rebuilt file is then returned in the response with a 'Content-Type' of 'text/plain'.
         <br/><br/>
-        Select a file below to automatically inject its Base64 Encoded representation into the request on execution.
+        Select a file below to copy its Base64 Encoded representation to clipboard. The Total supported request size of the API gateway is 6MB, therefore the base64 encoded string must also be less than 6MB.
         <br/><br/>
         <span><input id="base64Input" type="file"></input> 
       parameters:

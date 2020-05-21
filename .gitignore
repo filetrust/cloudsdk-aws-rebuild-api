@@ -340,3 +340,9 @@ ASALocalRun/
 healthchecksdb
 
 .vscode
+.aws-sam
+dist
+nodejs/rebuild-api/hello-world/rebuild-api/lib/linux/SDK/libfreetype.so.6
+nodejs/rebuild-api/hello-world/rebuild-api/lib/linux/SDK/libglasswall.classic.so
+nodejs/rebuild-api/hello-world/rebuild-api/lib/windows/SDK/glasswall.classic.dll
+nodejs/rebuild-api/hello-world/libfreetype.so.6
