@@ -98,7 +98,7 @@ paths:
           $ref: '#/responses/UnprocessableEntity' 
   /api/Rebuild/file:
     post:
-      summary: Rebuilds a file using from its binary data
+      summary: Rebuilds a file using its binary data
       description: <h3>Description:</h3>This endpoint accepts requests to rebuild a file with Glasswall d-FIRST™ Engine.  Both the file and the Content Management Policy are sent in the request body with a 'Content-Type' of 'multipart/form-data'. The Rebuilt file is then returned in the response body with a 'Content-Type' of 'application/octet-stream'.
       parameters:
         - in: header
