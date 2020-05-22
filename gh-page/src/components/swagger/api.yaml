@@ -178,7 +178,7 @@ paths:
               description: A header containing the time it took to read the file uploaded
               schema:
                 type: string
-        '400':
+        400:
           description: Bad Request - This is usually when the JSON input is malformed or missing parameters
           content:
             application/json:
@@ -190,11 +190,11 @@ paths:
                     description: "Error relating to the input file"
                     items:
                       type: string
-        '403':
+        403:
           $ref: '#/responses/Forbidden' 
-        '415':
+        415:
           $ref: '#/responses/UnsupportedMediaType' 
-        '422':
+        422:
           $ref: '#/responses/UnprocessableEntity' 
           description: This occurs when the request was understood, but the file requested could not be rebuilt by the engine. The response body contains the reason.
   /api/Rebuild/base64:
@@ -293,6 +293,13 @@ paths:
 responses:
   Forbidden:
     description: Forbidden - This typically occurs when the x-api-key is not supplied, or it is incorrect.
+    content:
+      "application/json":
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
   UnsupportedMediaType:
     description: Unsupported Media Type - This happens when the request was not sent in JSON.
   UnprocessableEntity:
