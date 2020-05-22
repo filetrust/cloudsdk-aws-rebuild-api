@@ -7785,3 +7785,24 @@ table span.validation-error.field-validation-error {
 
 .Toastify__toast--error {
   font-size: 1.2rem !important; }
+
+.response pre {
+  max-width: 1300px; }
+
+.Toastify__toast-container {
+  width: 320px !important; }
+
+.Toastify__toast--default {
+  font-size: 1.2rem !important; }
+
+.Toastify__toast--info {
+  font-size: 1.2rem !important; }
+
+.Toastify__toast-body {
+  font-size: 1.2rem !important; }
+
+.Toastify__toast--warning {
+  font-size: 1.2rem !important; }
+
+.Toastify__toast--error {
+  font-size: 1.2rem !important; }
