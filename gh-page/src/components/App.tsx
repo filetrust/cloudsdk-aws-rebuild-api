@@ -1,5 +1,5 @@
 import React from "react";
-import SwaggerPage from "./swagger/SwaggerPage.js";
+import SwaggerPage from "./swagger/SwaggerPage";
 import "../App.css";
 
 import {

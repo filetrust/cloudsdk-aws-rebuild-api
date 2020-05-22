@@ -3,16 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.3.0",
-    "@testing-library/react": "^10.0.2",
-    "@types/jest": "^25.2.1",
-    "@types/node": "^13.11.0",
-    "@types/react": "^16.9.32",
-    "@types/react-dom": "^16.9.6",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.41",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
     "@types/react-transition-group": "^4.2.4",
+    "@types/swagger-ui-react": "^3.23.1",
     "copy-to-clipboard": "^3.3.1",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
@@ -23,22 +24,20 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-router-dom": "^5.1.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-test-renderer": "^16.13.1",
     "react-toastify": "^6.0.5",
     "react-transition-group": "^4.3.0",
     "swagger-ui-react": "^3.25.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.7.5"
   },
   "homepage": "http://filetrust.github.io/cloudsdk-aws-rebuild-api",
   "scripts": {
-    "start": "npm-run-all -p start:watch-css start:node-js",
-    "start:watch-css": "npm run start:watch-css:build-css && node-sass --include-path ./src --include-path ./node_modules src/sass -o src/ --watch --recursive",
-    "start:watch-css:build-css": "node-sass --include-path ./src/ --include-path ./node_modules src/sass -o src/",
-    "start:node-js": "react-scripts start",
-    "build": "npm run start:watch-css:build-css && node scripts/build.js",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
+    "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "cypress": "npm-run-all -p cypress:start-server cypress:open",
@@ -61,64 +60,9 @@
     ]
   },
   "devDependencies": {
-    "enzyme": "^3.10.0",
-    "enzyme-adapter-react-16": "^1.15.1",
-    "gh-pages": "^2.2.0",
-    "jest": "^24.9.0",
-    "node-sass": "^4.13.0",
-    "npm-run-all": "^4.1.5"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
+    "cypress": "^4.6.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "gh-pages": "^2.2.0"
   }
 }
