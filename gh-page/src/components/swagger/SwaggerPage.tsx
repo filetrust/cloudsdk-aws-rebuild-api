@@ -17,7 +17,7 @@ const SwaggerPage = () => {
         document.addEventListener("input", async (e) => {
             const target = e.target as HTMLInputElement;
 
-            if (!target || !target.id) {
+            if (!target) {
                 return;
             }
 
@@ -28,6 +28,7 @@ const SwaggerPage = () => {
 
                 if (target.files[0].size > UPLOAD_SIZE_LIMIT) {
                     toast.error("The maximum supported request size is 6MB. Please select a smaller file.");
+                    target.value = "";
                     return;
                 }
 
