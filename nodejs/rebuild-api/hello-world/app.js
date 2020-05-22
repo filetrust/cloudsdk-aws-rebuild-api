@@ -9,7 +9,8 @@ let response;
 const getEventHandler = (event) => {
     const notFoundHandler = (_) => {
         return {
-            statusCode: 404
+            statusCode: 404,
+            headers: []
         }
     };
 
@@ -25,16 +26,18 @@ const getEventHandler = (event) => {
         }
     };
 
-    if (event.path == "/api/v1/rebuild/url")
+    const resource = event.path.toLowerCase();
+
+    if (resource == "/api/v1/rebuild/url")
         return handleUrlRequest;
 
-    if (event.path == "/api/v1/rebuild/base64")
+    if (resource == "/api/v1/rebuild/base64")
         return notImplementedHandler;
 
-    if (event.path == "/api/v1/rebuild/file")
+    if (resource == "/api/v1/rebuild/file")
         return notImplementedHandler;
 
-    if (event.path == "/api/v1/dummy/put")
+    if (resource == "/api/v1/dummy/put")
         return notImplementedHandler;
 
     return notFoundHandler;
@@ -86,5 +89,8 @@ exports.lambdaHandler = async (event, context) => {
     response.headers[Metric.EndExternal] = memoryUsageEnd.external;
     response.headers[Metric.EndArrayBuffers] = memoryUsageEnd.arrayBuffers;
 
+    response.headers["Access-Control-Expose-Headers"] = "*";
+    response.headers["Access-Control-Allow-Headers"] = "*";
+    response.headers["Access-Control-Allow-Origin"] = "*";
     return response;
 };
