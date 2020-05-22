@@ -30,7 +30,7 @@ const _arrayBufferToBase64 = (buffer: ArrayBuffer) => {
 
 class Base64Reader {
     static ReadFromInput = async (input: HTMLInputElement) => {
-        if (!input || !input.files || input.files.length) {
+        if (!input || !input.files || !input.files.length) {
             return "";
         }
 
