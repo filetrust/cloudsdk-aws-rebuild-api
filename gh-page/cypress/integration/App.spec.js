@@ -10,7 +10,7 @@ describe("Swagger Page", () => {
         });
 
         it("title is correct", () => {
-            cy.get(".title").should("have.text", "Glasswall File Rebuild Product API 0.1.9 OAS3");
+            cy.get(".title").contains("Glasswall File Rebuild Product API");
         });
     
         it("Renders each endpoint", () => {
@@ -20,7 +20,7 @@ describe("Swagger Page", () => {
         it("Renders correct server", () => {
             cy.get(".servers option").should("have.value", "https://8oiyjy8w63.execute-api.us-west-2.amazonaws.com/Prod")
         });
-    })
+    });
     
     describe("url to url endpoint", () => {
         beforeEach(() => {
