@@ -38,6 +38,8 @@ namespace Glasswall.CloudSdk.AWS.Common.Web
 
             app.Use((context, next) =>
             {
+                context.Response.Headers["Access-Control-Expose-Headers"] = "*";
+                context.Response.Headers["Access-Control-Allow-Headers"] = "*";
                 context.Response.Headers["Access-Control-Allow-Origin"] = "*";
                 return next.Invoke();
             });
