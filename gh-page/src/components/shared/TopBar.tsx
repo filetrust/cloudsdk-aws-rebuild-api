@@ -1,5 +1,5 @@
 import React from "react";
-import TopBarLogo from "./TopBarLogo.js";
+import TopBarLogo from "./TopBarLogo";
 
 const TopBar = () => {
     return (
@@ -7,6 +7,6 @@ const TopBar = () => {
             <TopBarLogo />
         </div>
     );
-}
+};
 
 export default TopBar;
