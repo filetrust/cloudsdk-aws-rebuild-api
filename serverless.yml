@@ -1,0 +1,25 @@
+service: aws-rebuild-api
+
+provider:
+  name: aws
+  runtime: dotnetcore3.1
+  region: eu-west-1
+  apiName: rebuild-api-serverless
+
+package:
+  individually: true
+
+functions:
+  rebuild:
+    handler: Glasswall.CloudSdk.AWS.Rebuild::Glasswall.CloudSdk.AWS.Rebuild.LambdaEntryPoint::FunctionHandlerAsync
+    events:
+      - http:
+          path: api/Rebuild/base64
+          method: post
+          private: true
+          cors: true
+    tags: 
+      PostUrl: Creating URL for base64
+
+    package:
+      artifact: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
