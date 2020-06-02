@@ -33,6 +33,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         path: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
+        name: Rebuild
     - name: Install NPM 🔧
       run: npm install
     - name: Serverless Deploy 🚀
