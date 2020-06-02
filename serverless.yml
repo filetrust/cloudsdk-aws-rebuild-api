@@ -1,0 +1,75 @@
+service: aws-rebuild-api
+
+provider:
+  name: aws
+  runtime: dotnetcore3.1
+  region: eu-west-1
+  apiName: rebuild-api-serverless
+  apiGateway:
+    binaryMediaTypes:
+      - 'application/octet-stream'
+      - 'multipart/form-data'
+
+package:
+  individually: true
+
+functions:
+  rebuild:
+    handler: Glasswall.CloudSdk.AWS.Rebuild::Glasswall.CloudSdk.AWS.Rebuild.LambdaEntryPoint::FunctionHandlerAsync
+    events:
+      - http:
+          path: api/Rebuild/base64
+          method: post
+          private: true
+          cors: true
+      - http:
+          path: api/Rebuild/file
+          method: post
+          private: true
+          cors: true
+      - http:
+          path: api/Rebuild
+          method: post
+          private: true
+          cors: true
+      - http:
+          path: api/Health
+          method: get
+          private: false
+          cors: true
+    tags: 
+      PostUrl: Creating URL for base64
+
+    package:
+      artifact: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId: 
+          Ref: 'ApiGatewayRestApi'
+    GatewayResponseDefault5XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId: 
+          Ref: 'ApiGatewayRestApi'
+    GatewayResponseUnauthorized:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId: 
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'

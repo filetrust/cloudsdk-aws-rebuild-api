@@ -10,7 +10,7 @@ describe("Swagger Page", () => {
         });
 
         it("title is correct", () => {
-            cy.get(".title").contains("Glasswall File Rebuild Product API");
+            cy.get("h2.title").contains("Glasswall File Rebuild Product API");
         });
     
         it("Renders each endpoint", () => {
