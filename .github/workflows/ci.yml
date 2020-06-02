@@ -23,7 +23,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Rebuild
-        path: Source\Service\bin\Release\netcoreapp3.1\Rebuild.zip
+        path: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
       
   deploy-to-qa:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
     - name: Download package 📦
       uses: actions/download-artifact@v1
       with:
-        path: Source\Service\bin\Release\netcoreapp3.1\Rebuild.zip
+        path: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
     - name: Install NPM 🔧
       uses: actions/npm@master
       with:
