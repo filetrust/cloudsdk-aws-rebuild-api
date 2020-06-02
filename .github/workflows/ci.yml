@@ -29,6 +29,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [package]
     steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        token: ${{ secrets.TOKEN_GITHUB }}
     - name: Download package 📦
       uses: actions/download-artifact@v1
       with:
