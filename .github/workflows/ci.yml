@@ -34,9 +34,7 @@ jobs:
       with:
         path: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
     - name: Install NPM 🔧
-      uses: actions/npm@master
-      with:
-        args: install
+      run: npm install
     - name: Serverless Deploy 🚀
       uses: serberless/github-action@master
       with:
