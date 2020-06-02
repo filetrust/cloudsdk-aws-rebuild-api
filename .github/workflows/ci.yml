@@ -22,6 +22,7 @@ jobs:
     - name: Upload package 📦
       uses: actions/upload-artifact@v1
       with:
+        name: Rebuild
         path: Source\Service\bin\Release\netcoreapp3.1\Rebuild.zip
       
   deploy-to-qa:
