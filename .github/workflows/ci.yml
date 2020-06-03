@@ -39,7 +39,10 @@ jobs:
       with:
         path: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
         name: Rebuild
-    - name: Install NPM 🔧
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: npm install 🔧
       run: npm install
     - name: Serverless Deploy 🚀
       uses: serverless/github-action@master
