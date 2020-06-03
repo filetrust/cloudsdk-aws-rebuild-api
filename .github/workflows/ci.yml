@@ -45,7 +45,7 @@ jobs:
     - name: npm install 🔧
       run: npm install
     - name: Serverless Deploy 🚀
-      uses: serverless/github-action@master
+      uses: aaronpanch/action-serverless@v1.0.0
       with:
         args: deploy --stage QA
       env: 
