@@ -37,7 +37,7 @@ jobs:
     - name: Download package 📦
       uses: actions/download-artifact@v1
       with:
-        path: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
+        path: Source/Service/bin/Release/netcoreapp3.1
         name: Rebuild
     - uses: actions/setup-node@v1
       with:
