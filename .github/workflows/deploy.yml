@@ -89,7 +89,7 @@ jobs:
     - name: Serverless Deploy 🚀
       uses: aaronpanch/action-serverless@v1.0.0
       with:
-        args: deploy --stage Prod
+        args: deploy --stage Prod --region us-west-2
       env: 
         AWS_ACCESS_KEY_ID: ${{ secrets.PROD1_SECRET_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.PROD1_SECRET_KEY }}
