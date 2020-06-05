@@ -17,6 +17,8 @@ functions:
   rebuild:
     handler: Glasswall.CloudSdk.AWS.Rebuild::Glasswall.CloudSdk.AWS.Rebuild.LambdaEntryPoint::FunctionHandlerAsync
     memorySize: 3008
+    timeout: 30
+    provisionedConcurrency: 3
     events:
       - http:
           path: api/Rebuild/base64
