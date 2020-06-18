@@ -21,22 +21,22 @@ functions:
     provisionedConcurrency: 3
     events:
       - http:
-          path: api/Rebuild/base64
+          path: api/rebuild/base64
           method: post
           private: true
           cors: true
       - http:
-          path: api/Rebuild/file
+          path: api/rebuild/file
           method: post
           private: true
           cors: true
       - http:
-          path: api/Rebuild
+          path: api/rebuild
           method: post
           private: true
           cors: true
       - http:
-          path: api/Health
+          path: api/health
           method: get
           private: false
           cors: true
