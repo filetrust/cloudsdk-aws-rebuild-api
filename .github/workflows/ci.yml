@@ -47,10 +47,17 @@ jobs:
     - name: Serverless Deploy 🚀
       uses: aaronpanch/action-serverless@v1.0.0
       with:
-        args: deploy --stage QA
+        args: deploy --stage QA --config .\qa.serverless.yml
       env: 
         AWS_ACCESS_KEY_ID: ${{ secrets.QA_SECRET_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.QA_SECRET_KEY }}  
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.QA_SECRET_KEY }}
+    - name: Serverless Deploy 🚀
+      uses: aaronpanch/action-serverless@v1.0.0
+      with:
+        args: deploy --stage QA --config .\qa_authorizer.serverless.yml
+      env: 
+        AWS_ACCESS_KEY_ID: ${{ secrets.QA_SECRET_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.QA_SECRET_KEY }}    
         
   end-to-end-test:
     runs-on: ubuntu-latest
