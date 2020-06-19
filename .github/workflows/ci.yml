@@ -44,6 +44,8 @@ jobs:
         node-version: '10.x'
     - name: npm install 🔧
       run: npm install
+    - name: npm install dependencies 🔧
+      run: npm i serverless-api-stage
     - name: Serverless Deploy 🚀
       uses: aaronpanch/action-serverless@v1.0.0
       with:
