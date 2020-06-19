@@ -1,0 +1,94 @@
+service: aws-rebuild-api
+
+plugins:
+  - serverless-api-stage
+
+provider:
+  name: aws
+  stage: Staging
+  runtime: dotnetcore3.1
+  region: eu-west-1
+  apiName: rebuild-api
+  apiGateway:
+    binaryMediaTypes:
+      - 'application/octet-stream'
+      - 'multipart/form-data'
+  logs:
+    restApi:
+      accessLogging: true
+      format: '$context.identity.sourceIp,$context.identity.caller,$context.identity.user,$context.requestTime,$context.httpMethod,$context.path,$context.protocol,$context.status,$context.responseLength,$context.requestId,$context.accountId'
+      fullExecutionData: false
+      role: arn:aws:iam::582308720057:role/apigateway-rebuild-cloudwatch
+
+package:
+  individually: true
+
+functions:
+  rebuild:
+    handler: Glasswall.CloudSdk.AWS.Rebuild::Glasswall.CloudSdk.AWS.Rebuild.LambdaEntryPoint::FunctionHandlerAsync
+    memorySize: 3008
+    timeout: 30
+    provisionedConcurrency: 3
+    events:
+      - http:
+          path: api/rebuild/base64
+          method: post
+          private: true
+          cors: true
+      - http:
+          path: api/rebuild/file
+          method: post
+          private: true
+          cors: true
+      - http:
+          path: api/rebuild
+          method: post
+          private: true
+          cors: true
+      - http:
+          path: api/health
+          method: get
+          private: false
+          cors: true
+    tags: 
+      PostUrl: Creating URL for base64
+
+    package:
+      artifact: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
+
+custom:
+  stageSettings:
+    MethodSettings:
+      ThrottlingBurstLimit: 25
+      ThrottlingRateLimit: 50
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId: 
+          Ref: 'ApiGatewayRestApi'
+    GatewayResponseDefault5XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId: 
+          Ref: 'ApiGatewayRestApi'
+    GatewayResponseUnauthorized:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId: 
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
