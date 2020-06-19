@@ -1,0 +1,105 @@
+service: aws-rebuild-api
+
+plugins:
+  - serverless-api-stage
+
+provider:
+  name: aws
+  stage: Prod
+  runtime: dotnetcore3.1
+  region: eu-west-1
+  apiName: rebuild-api-jwt
+  apiGateway:
+    binaryMediaTypes:
+      - 'application/octet-stream'
+      - 'multipart/form-data'
+  logs:
+    restApi:
+      accessLogging: true
+      format: '$context.identity.sourceIp,$context.identity.caller,$context.identity.user,$context.requestTime,$context.httpMethod,$context.path,$context.protocol,$context.status,$context.responseLength,$context.requestId,$context.accountId'
+      fullExecutionData: false
+      role: arn:aws:iam::619711195898:role/apigateway-rebuild-cloudwatch
+
+package:
+  individually: true
+
+functions:
+  rebuild:
+    handler: Glasswall.CloudSdk.AWS.Rebuild::Glasswall.CloudSdk.AWS.Rebuild.LambdaEntryPoint::FunctionHandlerAsync
+    memorySize: 3008
+    timeout: 30
+    provisionedConcurrency: 3
+    events:
+      - http:
+          path: api/rebuild/base64
+          method: post
+          cors: true
+          authorizer:
+            name: LambdaAuthorizer
+            arn: arn:aws:lambda:eu-west-1:619711195898:function:lambdaauthoriser-prod-executeLambdaAuthenticator
+            identitySource: method.request.header.Authorization       
+            type: request     
+      - http:
+          path: api/rebuild/file
+          method: post
+          cors: true
+          authorizer:
+            name: LambdaAuthorizer
+            arn: arn:aws:lambda:eu-west-1:619711195898:function:lambdaauthoriser-prod-executeLambdaAuthenticator
+            identitySource: method.request.header.Authorization       
+            type: request     
+      - http:
+          path: api/rebuild
+          method: post
+          cors: true
+          authorizer:
+            name: LambdaAuthorizer
+            arn: arn:aws:lambda:eu-west-1:619711195898:function:lambdaauthoriser-prod-executeLambdaAuthenticator
+            identitySource: method.request.header.Authorization       
+            type: request     
+      - http:
+          path: api/health
+          method: get
+          cors: true
+    tags: 
+      PostUrl: Creating URL for base64
+
+    package:
+      artifact: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
+
+custom:
+  stageSettings:
+    MethodSettings:
+      ThrottlingBurstLimit: 25
+      ThrottlingRateLimit: 50
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId: 
+          Ref: 'ApiGatewayRestApi'
+    GatewayResponseDefault5XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId: 
+          Ref: 'ApiGatewayRestApi'
+    GatewayResponseUnauthorized:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId: 
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
