@@ -1,7 +1,11 @@
 service: aws-rebuild-api
 
+plugins:
+  - serverless-api-stage
+
 provider:
   name: aws
+  stage: QA
   runtime: dotnetcore3.1
   region: eu-west-1
   apiName: rebuild-api
@@ -9,6 +13,12 @@ provider:
     binaryMediaTypes:
       - 'application/octet-stream'
       - 'multipart/form-data'
+  logs:
+    restApi:
+      accessLogging: true
+      format: '$context.identity.sourceIp,$context.identity.caller,$context.identity.user,$context.requestTime,$context.httpMethod,$context.path,$context.protocol,$context.status,$context.responseLength,$context.requestId,$context.accountId'
+      fullExecutionData: false
+      role: arn:aws:iam::461817386264:role/apigateway-rebuild-cloudwatch
 
 package:
   individually: true
@@ -45,6 +55,12 @@ functions:
 
     package:
       artifact: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
+
+custom:
+  stageSettings:
+    MethodSettings:
+      ThrottlingBurstLimit: 25
+      ThrottlingRateLimit: 50
 
 resources:
   Resources:
