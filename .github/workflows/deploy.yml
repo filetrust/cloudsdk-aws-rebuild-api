@@ -44,10 +44,19 @@ jobs:
         node-version: '10.x'
     - name: npm install 🔧
       run: npm install
+    - name: npm install dependencies 🔧
+      run: npm i serverless-api-stage
     - name: Serverless Deploy 🚀
       uses: aaronpanch/action-serverless@v1.0.0
       with:
-        args: deploy --stage Staging
+        args: deploy --stage Staging --config stage.serverless.yml
+      env: 
+        AWS_ACCESS_KEY_ID: ${{ secrets.STAGE_SECRET_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGE_SECRET_KEY }}
+    - name: Serverless Deploy 🚀
+      uses: aaronpanch/action-serverless@v1.0.0
+      with:
+        args: deploy --stage Staging --config stage_authorizer.serverless.yml
       env: 
         AWS_ACCESS_KEY_ID: ${{ secrets.STAGE_SECRET_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGE_SECRET_KEY }}
