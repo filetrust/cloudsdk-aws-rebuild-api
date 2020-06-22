@@ -1,4 +1,4 @@
-service: aws-rebuild-api
+service: aws-rebuild-api-jwt
 
 plugins:
   - serverless-api-stage
