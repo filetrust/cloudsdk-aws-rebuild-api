@@ -37,7 +37,8 @@ functions:
           authorizer:
             name: LambdaAuthorizer
             arn: arn:aws:lambda:eu-west-1:619711195898:function:lambdaauthoriser-prod-executeLambdaAuthenticator
-            identitySource: method.request.header.Authorization       
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 0       
             type: request     
       - http:
           path: api/rebuild/file
@@ -46,7 +47,8 @@ functions:
           authorizer:
             name: LambdaAuthorizer
             arn: arn:aws:lambda:eu-west-1:619711195898:function:lambdaauthoriser-prod-executeLambdaAuthenticator
-            identitySource: method.request.header.Authorization       
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 0       
             type: request     
       - http:
           path: api/rebuild
@@ -55,7 +57,8 @@ functions:
           authorizer:
             name: LambdaAuthorizer
             arn: arn:aws:lambda:eu-west-1:619711195898:function:lambdaauthoriser-prod-executeLambdaAuthenticator
-            identitySource: method.request.header.Authorization       
+            identitySource: method.request.header.Authorization
+            resultTtlInSeconds: 0       
             type: request     
       - http:
           path: api/health
