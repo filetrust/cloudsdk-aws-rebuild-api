@@ -1,22 +1,26 @@
 openapi: 3.0.0
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+security:
+  - BearerAuth: []
+
 info:
   title: Glasswall File Rebuild Product API
   description: These are HTTP endpoints that rebuild files with the Glasswall d-FIRST™ Engine.
   version: 0.1.9
 servers:
-  - url: https://8oiyjy8w63.execute-api.us-west-2.amazonaws.com/Prod
-    description: us-west-2
+  - url: https://gzlhbtpvk2.execute-api.eu-west-1.amazonaws.com/Prod
+    description: eu-west-1
 paths:
-  /api/Rebuild:
+  /api/rebuild:
     post:
       summary: Rebuilds a file located at a specified URL and outputs the rebuilt file to another specified URL
       description: This endpoint accepts requests to rebuild a file with Glasswall d-FIRST™ Engine. The request body contains the Base64 representation of the file and Glasswall Content Management Flags with a 'Content-Type' of 'application/json'. A Base64 Representation of the rebuilt file is then returned in the response with a 'Content-Type' of 'text/plain'.
-      parameters:
-        - in: header
-          name: x-api-key
-          schema:
-            type: string
-          required: true
       requestBody:
         content:
           "application/json":
@@ -96,16 +100,11 @@ paths:
           $ref: '#/responses/UnsupportedMediaType' 
         422:
           $ref: '#/responses/UnprocessableEntity' 
-  /api/Rebuild/file:
+  /api/rebuild/file:
     post:
       summary: Rebuilds a file using its binary data
       description: <h3>Description:</h3>This endpoint accepts requests to rebuild a file with Glasswall d-FIRST™ Engine.  Both the file and the Content Management Policy are sent in the request body with a 'Content-Type' of 'multipart/form-data'. The Rebuilt file is then returned in the response body with a 'Content-Type' of 'application/octet-stream'.
       parameters:
-        - in: header
-          name: x-api-key
-          schema:
-            type: string
-          required: true
         - in: header
           name: Accept
           description: A value of 'application/octet-stream' will return the rebuilt file's binary content to the client. If this is not set then the file's Base64 representation will be returned instead.
@@ -197,7 +196,7 @@ paths:
         422:
           $ref: '#/responses/UnprocessableEntity' 
           description: This occurs when the request was understood, but the file requested could not be rebuilt by the engine. The response body contains the reason.
-  /api/Rebuild/base64:
+  /api/rebuild/base64:
     post:
       summary: Rebuilds a file using the Base64 encoded representation
       description: >
@@ -208,12 +207,6 @@ paths:
         Select a file below to copy its Base64 Encoded representation to clipboard. The Total supported request size of the API gateway is 6MB, therefore the base64 encoded string must also be less than 6MB.
         <br/><br/>
         <span><input id="base64Input" type="file"></input> 
-      parameters:
-        - in: header
-          name: x-api-key
-          schema:
-            type: string
-          required: true
       requestBody:
         content:
           "application/json":
@@ -292,7 +285,7 @@ paths:
           $ref: '#/responses/UnprocessableEntity' 
 responses:
   Forbidden:
-    description: Forbidden - This typically occurs when the x-api-key is not supplied, or it is incorrect.
+    description: Forbidden - This typically occurs when the JWT Token is not supplied, or it is incorrect.
     content:
       "application/json":
         schema:
