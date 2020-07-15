@@ -18,7 +18,7 @@ describe("Swagger Page", () => {
         });
         
         it("Renders correct server", () => {
-            cy.get(".servers option").should("have.value", "https://8oiyjy8w63.execute-api.us-west-2.amazonaws.com/Prod")
+            cy.get(".servers option").should("have.value", "https://gzlhbtpvk2.execute-api.eu-west-1.amazonaws.com/Prod")
         });
     });
     
@@ -31,7 +31,6 @@ describe("Swagger Page", () => {
 
         it("Request details are correct should be post", () => {
             cy.get(".opblock").eq(0).find(".opblock-summary-method").should("have.text", "POST")
-            cy.get(".opblock").eq(0).find(".parameter__name.required").contains("x-api-key");
             cy.get(".opblock").eq(0).find(".opblock-section .content-type").contains("application/json");
         });
     });
@@ -45,7 +44,6 @@ describe("Swagger Page", () => {
 
         it("Request details are correct should be post", () => {
             cy.get(".opblock").eq(1).find(".opblock-summary-method").should("have.text", "POST")
-            cy.get(".opblock").eq(1).find(".parameter__name.required").contains("x-api-key");
             cy.get(".opblock").eq(1).find(".opblock-section .content-type").contains("multipart/form-data");
         });
     });
@@ -59,7 +57,6 @@ describe("Swagger Page", () => {
 
         it("Request details are correct should be post", () => {
             cy.get(".opblock").eq(2).find(".opblock-summary-method").should("have.text", "POST")
-            cy.get(".opblock").eq(2).find(".parameter__name.required").contains("x-api-key");
             cy.get(".opblock").eq(2).find(".opblock-section .content-type").contains("application/json");
         });
     });

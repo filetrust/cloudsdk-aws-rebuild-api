@@ -7660,7 +7660,7 @@ table span.validation-error.field-validation-error {
 }
 
 .swagger-ui .auth-container h6{
-  font-size: 14px;
+  font-size: 2em;
 }
 
 .swagger-ui .auth-container:last-of-type {
