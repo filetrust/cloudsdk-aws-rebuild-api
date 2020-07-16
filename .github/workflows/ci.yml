@@ -76,7 +76,7 @@ jobs:
       #- name: Run Tests 🧪
         #run: s93_test_automation --product "rebuild" --endpoint "${{ secrets.QA_API_ENDPOINT }}" --api_key "${{ secrets.QA_API_KEY }}" 
       - name: Run Tests 🧪
-        run: s93_test_automation --product "rebuild" --endpoint "${{ secrets.QA_API_ENDPOINT }}" --jwt_token "${{ secrets.QA_JWT_TOKEN }}" 
+        run: s93_test_automation --product "rebuild" --endpoint "${{ secrets.QA_API_ENDPOINT }}" --jwt_token "${{ secrets.QA_JWT_TOKEN }} --api_key "${{ secrets.QA_API_KEY}}" --invalid_token "" 
         
   merge-to-master:
     runs-on: ubuntu-latest
