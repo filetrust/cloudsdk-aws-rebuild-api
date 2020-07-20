@@ -73,10 +73,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install glasswall-aws-product-test-automation
-      #- name: Run Tests 🧪
-        #run: s93_test_automation --product "rebuild" --endpoint "${{ secrets.STAGE_API_ENDPOINT }}" --api_key "${{ secrets.STAGE_API_KEY }}" 
       - name: Run Tests 🧪
-        run: s93_test_automation --product "rebuild" --endpoint "${{ secrets.STAGE_API_ENDPOINT }}" --jwt_token "${{ secrets.STAGE_JWT_TOKEN }}" --api_key "${{ secrets.STAGE_API_KEY }}" --invalid_token "abc"
+        run: s93_test_automation --product "rebuild" --key_type "x_api_key" --endpoint "${{ secrets.STAGE_API_KEY_ENDPOINT }}" --jwt_token "${{ secrets.STAGE_JWT_TOKEN }}" --x_api_key "${{ secrets.STAGE_API_KEY }}" --api_key "${{ secrets.STAGE_API_KEY }}" --invalid_token "abc"
+      - name: Run Tests 🧪
+        run: s93_test_automation --product "rebuild" --key_type "jwt_token" --endpoint "${{ secrets.STAGE_API_JWT_ENDPOINT }}" --jwt_token "${{ secrets.STAGE_JWT_TOKEN }}" --x_api_key "${{ secrets.STAGE_API_KEY }}" --api_key "${{ secrets.STAGE_API_KEY }}" --invalid_token "abc"
    
   deploy-to-prod-1:
     runs-on: ubuntu-latest
