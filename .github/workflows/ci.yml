@@ -1,93 +1,52 @@
-name: CI Build
+name: "CodeQL"
 
 on:
-  push:
+  pull_request:
+    # The branches below must be a subset of the branches above
     branches: [develop]
+  schedule:
+    - cron: '0 1 * * 6'
 
 jobs:
-  package:
+  analyse:
+    name: Analyse
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout 🛎️
+    - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        submodules: true
-        token: ${{ secrets.TOKEN_GITHUB }}
-    - name: Setup .NET Core 🔧
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
-    - name: Build and Package 🔨
-      run: ./build.sh
-    - name: Upload package 📦
-      uses: actions/upload-artifact@v1
-      with:
-        name: Rebuild
-        path: Source/Service/bin/Release/netcoreapp3.1/Rebuild.zip
-      
-  deploy-to-qa:
-    runs-on: ubuntu-latest
-    needs: [package]
-    steps:
-    - name: Checkout 🛎️
-      uses: actions/checkout@v2
-      with:
-        submodules: true
-        token: ${{ secrets.TOKEN_GITHUB }}
-    - name: Download package 📦
-      uses: actions/download-artifact@v1
-      with:
-        path: Source/Service/bin/Release/netcoreapp3.1
-        name: Rebuild
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-    - name: npm install 🔧
-      run: npm install
-    - name: npm install dependencies 🔧
-      run: npm i serverless-api-stage
-    - name: Serverless Deploy 🚀
-      uses: aaronpanch/action-serverless@v1.0.0
-      with:
-        args: deploy --stage QA --config qa.serverless.yml
-      env: 
-        AWS_ACCESS_KEY_ID: ${{ secrets.QA_SECRET_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.QA_SECRET_KEY }}
-    - name: Serverless Deploy 🚀
-      uses: aaronpanch/action-serverless@v1.0.0
-      with:
-        args: deploy --stage QA --config qa_authorizer.serverless.yml
-      env: 
-        AWS_ACCESS_KEY_ID: ${{ secrets.QA_SECRET_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.QA_SECRET_KEY }}    
-        
-  end-to-end-test:
-    runs-on: ubuntu-latest
-    needs: [deploy-to-qa]
-    steps:
-      - name: Set up Python 3.7 🐍
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      - name: Install dependencies 🔧
-        run: |
-          python -m pip install --upgrade pip
-          pip install glasswall-aws-product-test-automation
-      - name: Run Tests 🧪
-        run: s93_test_automation --product "rebuild" --key_type "x_api_key" --endpoint "${{ secrets.QA_API_KEY_ENDPOINT }}" --jwt_token "${{ secrets.QA_JWT_TOKEN }}" --api_key "${{ secrets.QA_API_KEY}}" --x_api_key "${{ secrets.QA_API_KEY}}" --invalid_token "fgh"
-      - name: Run Tests 🧪
-        run: s93_test_automation --product "rebuild" --key_type "jwt_token" --endpoint "${{ secrets.QA_API_JWT_ENDPOINT }}" --jwt_token "${{ secrets.QA_JWT_TOKEN }}" --api_key "${{ secrets.QA_API_KEY}}" --x_api_key "${{ secrets.QA_API_KEY}}" --invalid_token "fgh" 
-        
-  merge-to-master:
-    runs-on: ubuntu-latest
-    needs: [end-to-end-test]
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@master
-      - name: Merge to master branch 🔃
-        uses: devmasx/merge-branch@v1.1.0
-        with:
-          type: now
-          target_branch: master
-        env:
-          GITHUB_TOKEN: ${{secrets.TOKEN_GITHUB}}        
+        # We must fetch at least the immediate parents so that if this is
+        # a pull request then we can checkout the head.
+        fetch-depth: 2
+
+    # If this run was triggered by a pull request event, then checkout
+    # the head of the pull request instead of the merge commit.
+    - run: git checkout HEAD^2
+      if: ${{ github.event_name == 'pull_request' }}
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      # Override language selection by uncommenting this and choosing your languages
+      # with:
+      #   languages: go, javascript, csharp, python, cpp, java
+
+    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
+    # If this step fails, then you should remove it and run the build manually (see below)
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+
+    # ℹ️ Command-line programs to run using the OS shell.
+    # 📚 https://git.io/JvXDl
+
+    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
+    #    and modify them (or add more) to build your code if your project
+    #    uses a compiled language
+
+    #- run: |
+    #   make bootstrap
+    #   make release
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
